@@ -1,6 +1,6 @@
 <template>
     <div class="consumption-form">
-        <div class="md-title">Расход ресурса</div>
+        <div class="md-title">Расход/приход ресурса</div>
         <div class="category selection">
             <div class="md-layout">
                 <div class="md-layout-item label">
@@ -23,7 +23,7 @@
                     <div class="md-subtitle">Наименование</div>
                 </div>
                 <div class="md-layout-item selector">
-                   <md-autocomplete v-model="name" :md-options="names" :md-selected="selectedName()"> 
+                   <md-autocomplete v-model="name" :md-options="names" :md-selected="selectedName()">
                    </md-autocomplete>
                 </div>
             </div>
@@ -42,7 +42,7 @@
         </div>
         <div class="buttons-row">
             <md-button class="md-raised left" :disabled="!actionEnabled" @click="makeConsumption()">Записать расход</md-button>
-            <md-button class="md-raised right" @click="clear()">Очистить</md-button>
+            <md-button class="md-raised right" :disabled="!actionEnabled" @click="addGrass()">Записать приход</md-button>
         </div>
         <div v-if="resultMessage">{{resultMessage}}</div>
     </div>
@@ -85,7 +85,7 @@ export default {
                 })
                 .catch((error) => console.log(error));
         },
-        
+
         selectedName() {
             if(!this.name)
                 return;
@@ -107,9 +107,34 @@ export default {
                 return;
             }
 
-            this.$store.dispatch("consumptGrass", { id: selectedGrass.id, reduceBy: this.number })
+            this.$store.dispatch("consumptGrass", { id: selectedGrass.id, amount: this.number, isPlus: false })
                 .then(() => {
-                    let res = `Успешны записан расход. Категория: ${this.category}. Наименование: ${this.name}. Количество: ${this.number}.`;
+                    let res = `Успешно записан расход. Категория: ${this.category}. Наименование: ${this.name}. Количество: ${this.number}.`;
+                    this.clear();
+                    this.resultMessage = res;
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.resultMessage = "Ошибка";
+                });
+        },
+        addGrass() {
+            this.resultMessage = null;
+            if(!this.category || !this.name) {
+                this.resultMessage = "Укажите категорию и наименование ресурса";
+                return;
+            }
+
+            let selectedGrass = this.grass.find(g => g.name == this.name);
+
+            if(this.number < 0) {
+                this.resultMessage = `Неверное количество. Введите количестов больше 0`;
+                return;
+            }
+
+            this.$store.dispatch("consumptGrass", { id: selectedGrass.id, amount: this.number, isPlus: true })
+                .then(() => {
+                    let res = `Успешно записан приход. Категория: ${this.category}. Наименование: ${this.name}. Количество: ${this.number}.`;
                     this.clear();
                     this.resultMessage = res;
                 })

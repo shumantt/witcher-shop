@@ -1,14 +1,14 @@
 <template>
     <div>
          <md-list>
-          
+
           <BaseMenu/>
 
           <md-divider></md-divider>
 
           <md-list-item to="/home/consumption">
             <md-icon>arrow_downward</md-icon>
-            <span class="md-list-item-text">Расход</span>
+            <span class="md-list-item-text">Расход/Приход</span>
           </md-list-item>
 
           <md-list-item>

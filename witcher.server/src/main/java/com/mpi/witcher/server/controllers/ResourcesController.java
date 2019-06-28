@@ -24,14 +24,18 @@ public class ResourcesController {
     }
 
     @PutMapping("/grass")
-    public ResponseEntity ConsumptGrass(@RequestBody GrassConsumptionRequest request) {
+    public ResponseEntity changeAmountGrass(@RequestBody GrassConsumptionRequest request) {
         try {
             Grass foundGrass = GrassRepository.Grass.stream().filter(g -> g.getId() == request.getId())
                     .findFirst()
                     .orElseThrow(() -> new Exception("Grass not found"));
-            foundGrass.reduceQuantity(request.getReduceBy());
-            if(foundGrass.getQuantity() == 0)
-                GrassRepository.Grass.remove(foundGrass);
+            if(request.getIsPlus()){
+                foundGrass.increaseQuantity(request.getAmount());
+            } else if(foundGrass.getQuantity() > 0){
+                foundGrass.reduceQuantity(request.getAmount());
+            }
+//            if(foundGrass.getQuantity() == 0)
+//                GrassRepository.Grass.remove(foundGrass);
             return ok(foundGrass);
         } catch (Exception e) {
             return badRequest().body(e.getMessage());

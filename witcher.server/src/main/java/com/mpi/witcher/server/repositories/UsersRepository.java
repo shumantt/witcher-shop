@@ -21,6 +21,16 @@ public class UsersRepository {
         }
     };
 
+    public static boolean createUser(String login, String password, String role) {
+        for (User user : Users) {
+            if (user.getLogin().toLowerCase().equals(login)) {
+                return false;
+            }
+        }
+        Users.add(new User(login, login, "/img/witcher-face.jpg", role.toUpperCase(), passwordEncoder.encode(password)));
+        return true;
+    }
+
     public static Optional<User> findByUserName(String name) {
         User currentUser = null;
         for (User user: UsersRepository.Users) {

@@ -4,21 +4,23 @@ import java.io.Serializable;
 
 public class GrassConsumptionRequest implements Serializable {
     private long id;
-    private int reduceBy;
+    private int amount;
+    private boolean isPlus;
 
-    public GrassConsumptionRequest(long id, int reduceBy) {
+    public GrassConsumptionRequest(long id, int amount, boolean isPlus) {
         this.id = id;
-        this.reduceBy = reduceBy;
+        this.amount = amount;
+        this.isPlus = isPlus;
     }
 
     public GrassConsumptionRequest() {}
 
-    public int getReduceBy() {
-        return reduceBy;
+    public int getAmount() {
+        return amount;
     }
 
-    public void setReduceBy(int reduceBy) {
-        this.reduceBy = reduceBy;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     public long getId() {
@@ -27,5 +29,13 @@ public class GrassConsumptionRequest implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public boolean getIsPlus() {
+        return isPlus;
+    }
+
+    public void setIsPlus(boolean plus) {
+        isPlus = plus;
     }
 }

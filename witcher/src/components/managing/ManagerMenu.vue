@@ -1,9 +1,9 @@
 <template>
     <div>
          <md-list>
-          
+
           <BaseMenu/>
-          
+
           <md-divider></md-divider>
 
           <md-list-item to="/managing/report">
@@ -11,7 +11,7 @@
             <span class="md-list-item-text">Отчеты</span>
           </md-list-item>
 
-          <md-list-item>
+          <md-list-item to="/managing/employees">
             <md-icon>people</md-icon>
             <span class="md-list-item-text">Сотрудники</span>
           </md-list-item>

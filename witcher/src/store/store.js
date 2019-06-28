@@ -1,7 +1,7 @@
 
 import Vue from "vue";
 import Vuex from "vuex";
-import {AuthService, RecipesService, GrassService, OrdersService} from "@/services/rest.service";
+import {AuthService, RecipesService, GrassService, OrdersService, ManagingService} from "@/services/rest.service";
 
 Vue.use(Vuex);
 
@@ -31,7 +31,7 @@ const actions = {
                     resolve(response.data);
                 })
                 .catch((error) => reject(error));
-        }); 
+        });
     },
 
     fetchRecipes() {
@@ -49,6 +49,23 @@ const actions = {
                 .catch(error => reject(error));
         });
     },
+
+    fetchUsers() {
+        return new Promise((resolve, reject) => {
+            ManagingService.getUsers()
+                .then((response) => resolve(response.data))
+                .catch(error => reject(error));
+        });
+    },
+
+    addUser(context, userRequest) {
+        return new Promise((resolve, reject) => {
+            ManagingService.createUser(userRequest)
+                .then((response) => resolve(response.data))
+                .catch(error => reject(error));
+        });
+    },
+
 
     consumptGrass(context, consumptionRequest) {
         return new Promise((resolve, reject) => {

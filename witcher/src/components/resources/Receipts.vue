@@ -115,7 +115,7 @@ export default {
                     this.recipes = recipes;
                     this.filterRecipes();
                 })
-                .catch((error) => console.log(error));
+                .catch(console.log);
         }
     }
 }

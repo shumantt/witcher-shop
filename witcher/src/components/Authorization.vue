@@ -79,5 +79,5 @@ export default {
 /* .left {
     float: left;
 }*/
- 
+
 </style>

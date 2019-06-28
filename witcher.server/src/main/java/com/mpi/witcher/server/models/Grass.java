@@ -32,4 +32,8 @@ public class Grass {
     public void reduceQuantity(int reduceBy) {
         quantity -= reduceBy;
     }
+
+    public void increaseQuantity(int by) {
+        quantity += by;
+    }
 }

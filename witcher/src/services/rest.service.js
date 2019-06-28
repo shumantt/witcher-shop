@@ -23,7 +23,12 @@ export const RecipesService = {
 }
 
 export const ManagingService = {
-
+    getUsers() {
+        return axios.get("http://localhost:8080/api/users");
+    },
+    createUser({login, password, role}) {
+        return axios.post("http://localhost:8080/api/user", { login, password, role })
+    }
 }
 
 export const OrdersService = {

@@ -28,13 +28,15 @@ import Receipts from '@/components/resources/Receipts.vue';
 import Consumption from '@/components/resources/Consumption.vue';
 import Order from '@/components/client/Order.vue';
 import Report from '@/components/managing/Report.vue';
+import Employees from '@/components/managing/Employees.vue'
 export default {
   name: 'Home',
   components: {
     Receipts,
     Consumption,
     Order,
-    Report
+    Report,
+    Employees
   },
 
   data() {
@@ -68,5 +70,5 @@ export default {
 
   .user-name {
     padding-left: 15px;
-  } 
+  }
 </style>

@@ -6,6 +6,7 @@ import Receipts from '@/components/resources/Receipts';
 import Consumption from '@/components/resources/Consumption';
 import Order from '@/components/client/Order';
 import Report from '@/components/managing/Report';
+import Employees from '@/components/managing/Employees'
 import WorkerMenu from '@/components/resources/WorkerMenu';
 import ClientMenu from '@/components/client/ClientMenu';
 import ManagerMenu from '@/components/managing/ManagerMenu';
@@ -53,6 +54,14 @@ const routes = [
                 }
             },
             {
+                name: 'Employees',
+                path: '/managing/employees',
+                components: {
+                    default: Employees,
+                    menu: ManagerMenu
+                }
+            },
+            {
                 name: 'managin_rec',
                 path: '/managing/receips',
                 components: {
@@ -94,5 +103,5 @@ const routes = [
 ]
 
 export default new VueRouter({
-    routes 
+    routes
 });
