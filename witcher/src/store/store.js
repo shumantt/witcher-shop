@@ -5,14 +5,25 @@ import {AuthService, RecipesService, GrassService, OrdersService, ManagingServic
 
 Vue.use(Vuex);
 
+
+let user = null;
+if (localStorage.user) {
+    user = JSON.parse(localStorage.user)
+}
+
 const state = {
-    user: {},
+    user: user,
     authError: ''
 };
+
+const getters = {
+    isLoggedIn: state => !!state.user,
+}
 
 const mutations = {
     setUser(state, user) {
         state.user = user;
+        localStorage.user = JSON.stringify(user);
     },
 
     setAuthError(state, error) {
@@ -32,6 +43,10 @@ const actions = {
                 })
                 .catch((error) => reject(error));
         });
+    },
+
+    logout(context) {
+        context.commit("setUser", null);
     },
 
     fetchRecipes() {
@@ -96,6 +111,7 @@ const store = new Vuex.Store({
     state: state,
     mutations: mutations,
     actions: actions,
+    getters: getters,
   });
 
 export default store;

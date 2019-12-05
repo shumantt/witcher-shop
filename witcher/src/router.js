@@ -9,6 +9,7 @@ import Report from '@/components/managing/Report';
 import Employees from '@/components/managing/Employees'
 import Grass from '@/components/resources/Grass';
 import ClientOrders from '@/components/client/ClientOrders';
+import store from './store/store'
 
 Vue.use(VueRouter);
 
@@ -49,7 +50,7 @@ const routes = [
                 component: Order
             },
             {
-                name: 'order',
+                name: 'orders',
                 path: '/client/orders',
                 component: ClientOrders,
             }
@@ -62,7 +63,17 @@ const routes = [
       }
 ]
 
-export default new VueRouter({
+let router =  new VueRouter({
     routes,
     mode: 'history'
 });
+
+router.beforeEach((to, from, next) => {
+    if (store.getters.isLoggedIn || to.name === 'auth') {
+        next()
+        return
+    }
+    next('/auth')
+  });
+
+export default router

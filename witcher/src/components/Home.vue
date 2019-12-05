@@ -2,17 +2,8 @@
   <div class="page-container">
     <md-app>
       <md-app-drawer md-permanent="full">
-        <md-toolbar class="md-large md-primary" md-elevation="0">
-          <div>
-            <md-avatar class="md-avatar-icon md-large md-accent">
-              <img :src="img" alt="Avatar">
-            </md-avatar>
-          </div>
-          <div class="user-name">{{userName}}</div>
-        </md-toolbar>
-        <Menu />
+        <Menu/>
       </md-app-drawer>
-
       <md-app-content>
         <router-view></router-view>
       </md-app-content>
@@ -39,20 +30,6 @@ export default {
     Employees,
     Menu
   },
-
-  data() {
-    return {
-    };
-  },
-  computed: {
-    userName() {
-      return this.$store.state.user.name;
-    },
-
-    img() {
-      return this.$store.state.user.pictureUrl;
-    }
-  }
 }
 </script>
 
