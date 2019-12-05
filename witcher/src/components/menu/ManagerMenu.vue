@@ -2,7 +2,6 @@
     <div>
          <md-list>
 
-          <BaseMenu/>
 
           <md-divider></md-divider>
 
@@ -21,13 +20,9 @@
 </template>
 
 <script>
-import BaseMenu from "@/components/BaseMenu.vue";
 
 export default {
-    name: 'ManagerMenu',
-    components: {
-        BaseMenu
-    }
+    name: 'ManagerMenu'
 }
 </script>
 

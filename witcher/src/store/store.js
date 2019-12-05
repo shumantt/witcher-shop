@@ -23,11 +23,11 @@ const mutations = {
 const actions = {
     auth(context, userAuthInfo) {
         // eslint-disable-next-line no-unused-vars
-        const {username, password} = userAuthInfo;
+        const {login, password} = userAuthInfo;
         return new Promise((resolve, reject) => {
             AuthService.auth(userAuthInfo)
                 .then((response) => {
-                    context.commit("setUser", response.data.user);
+                    context.commit("setUser", response.data);
                     resolve(response.data);
                 })
                 .catch((error) => reject(error));

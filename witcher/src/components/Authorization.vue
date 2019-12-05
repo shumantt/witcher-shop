@@ -42,8 +42,8 @@ export default {
                 this.error = "Заполните поле Пароль";
                 return;
             }
-            this.$store.dispatch("auth", { username: this.login, password: this.password })
-                .then((authResp) => this.processAuth(authResp.user))
+            this.$store.dispatch("auth", { login: this.login, password: this.password })
+                .then((user) => this.processAuth(user))
                 .catch((error) => {
                     this.error = "Пользователь или пароль неверные";
                 });
@@ -51,7 +51,7 @@ export default {
 
         processAuth(user) {
             console.log(user);
-            switch(user.roles[0]) {
+            switch(user.role) {
                 case "EMPLOYEE":
                     this.$router.push("/home/receips");
                     break;

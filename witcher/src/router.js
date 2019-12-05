@@ -7,9 +7,6 @@ import Consumption from '@/components/resources/Consumption';
 import Order from '@/components/client/Order';
 import Report from '@/components/managing/Report';
 import Employees from '@/components/managing/Employees'
-import WorkerMenu from '@/components/resources/WorkerMenu';
-import ClientMenu from '@/components/client/ClientMenu';
-import ManagerMenu from '@/components/managing/ManagerMenu';
 import Grass from '@/components/resources/Grass';
 import ClientOrders from '@/components/client/ClientOrders';
 
@@ -17,81 +14,44 @@ Vue.use(VueRouter);
 
 const routes = [
     {
-        path: '/home',
+        path: '/',
         name: 'home',
         component: Home,
         children: [
             {
                 name: 'receips',
                 path: '/home/receips',
-                components: {
-                    default: Receipts,
-                    menu: WorkerMenu
-                }
+                component: Receipts,
             },
             {
-                name: 'receips',
+                name: 'grass',
                 path: '/home/grass',
-                components: {
-                    default: Grass,
-                    menu: WorkerMenu
-                }
+                component: Grass,
             },
             {
                 name: 'consumption',
                 path: '/home/consumption',
-                components: {
-                    default: Consumption,
-                    menu: WorkerMenu
-                }
+                component: Consumption,
             },
             {
                 name: 'report',
                 path: '/managing/report',
-                components: {
-                    default: Report,
-                    menu: ManagerMenu
-                }
+                component: Report,
             },
             {
                 name: 'Employees',
                 path: '/managing/employees',
-                components: {
-                    default: Employees,
-                    menu: ManagerMenu
-                }
-            },
-            {
-                name: 'managin_rec',
-                path: '/managing/receips',
-                components: {
-                    default: Receipts,
-                    menu: ManagerMenu
-                }
-            },
-            {
-                name: 'managin_grass',
-                path: '/managing/grass',
-                components: {
-                    default: Grass,
-                    menu: ManagerMenu
-                }
+                component: Employees,
             },
             {
                 name: 'order',
                 path: '/client/order',
-                components: {
-                    default: Order,
-                    menu: ClientMenu
-                }
+                component: Order
             },
             {
                 name: 'order',
                 path: '/client/orders',
-                components: {
-                    default: ClientOrders,
-                    menu: ClientMenu
-                }
+                component: ClientOrders,
             }
         ]
       },
@@ -103,5 +63,6 @@ const routes = [
 ]
 
 export default new VueRouter({
-    routes
+    routes,
+    mode: 'history'
 });

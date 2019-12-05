@@ -1,10 +1,10 @@
 package com.mpi.witcher.server.controllers;
 
 import com.mpi.witcher.server.models.AuthenticationRequest;
-import com.mpi.witcher.server.models.User;
+import com.mpi.witcher.server.models.users.User;
+import com.mpi.witcher.server.models.users.WebUser;
 import com.mpi.witcher.server.repositories.UsersRepository;
 import com.mpi.witcher.server.security.jwt.JwtTokenProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,36 +16,34 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
+
+    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     @PostMapping("/signin")
     public ResponseEntity signin(@RequestBody AuthenticationRequest data) {
 
         try {
-            String username = data.getUsername();
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
+            String login = data.getLogin();
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login, data.getPassword()));
             User user = UsersRepository
-                    .findByUserName(username)
-                    .orElseThrow(() -> new UsernameNotFoundException("Username " + username + "not found"));
-            String token = jwtTokenProvider.createToken(username, user.getRoles());
+                    .findByUserName(login)
+                    .orElseThrow(() -> new UsernameNotFoundException("Login " + login + "not found"));
+            String token = jwtTokenProvider.createToken(login, user.getRoles());
 
-            Map<Object, Object> model = new HashMap<>();
-            model.put("user", user);
-            model.put("token", token);
-            return ok(model);
+            WebUser webUser = new WebUser(user.getName(), user.getPictureUrl(), user.getRole(), token);
+            return ok(webUser);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username/password supplied");
         }

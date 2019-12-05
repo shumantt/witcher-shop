@@ -1,4 +1,4 @@
-package com.mpi.witcher.server.models;
+package com.mpi.witcher.server.models.users;
 
 import java.io.Serializable;
 

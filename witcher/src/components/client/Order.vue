@@ -84,12 +84,12 @@ export default {
     },
     computed: {
         enabledAction() {
-            return this.category != null && this.name != null && this.category != '' && this.name != '' && this.number > 0;
+            return this.category != null && this.name != null && this.category !== '' && this.name !== '' && this.number > 0;
         },
         names() {
             if(!this.category)
                 return [];
-            return this.recipes.filter((r) => r.category == this.category).map(r => r.name);
+            return this.recipes.filter((r) => r.category === this.category).map(r => r.name);
         }
     },
     methods: {
@@ -100,7 +100,7 @@ export default {
             this.phone = null;
         },
         categorySelected() {
-            if(!this.category || this.namesFilterdBy == this.category)
+            if(!this.category || this.namesFilterdBy === this.category)
                 return;
             this.namesFilterdBy = this.category;
             this.name = null;

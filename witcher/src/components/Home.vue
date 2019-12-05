@@ -10,8 +10,7 @@
           </div>
           <div class="user-name">{{userName}}</div>
         </md-toolbar>
-
-        <router-view name="menu"></router-view>
+        <Menu />
       </md-app-drawer>
 
       <md-app-content>
@@ -28,7 +27,8 @@ import Receipts from '@/components/resources/Receipts.vue';
 import Consumption from '@/components/resources/Consumption.vue';
 import Order from '@/components/client/Order.vue';
 import Report from '@/components/managing/Report.vue';
-import Employees from '@/components/managing/Employees.vue'
+import Employees from '@/components/managing/Employees.vue';
+import Menu from '@/components/menu/Menu.vue';
 export default {
   name: 'Home',
   components: {
@@ -36,7 +36,8 @@ export default {
     Consumption,
     Order,
     Report,
-    Employees
+    Employees,
+    Menu
   },
 
   data() {

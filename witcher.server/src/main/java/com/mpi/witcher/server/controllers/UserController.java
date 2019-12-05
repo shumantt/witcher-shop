@@ -1,5 +1,5 @@
 package com.mpi.witcher.server.controllers;
-import com.mpi.witcher.server.models.NewUser;
+import com.mpi.witcher.server.models.users.NewUser;
 import com.mpi.witcher.server.repositories.UsersRepository;
 
 import org.springframework.http.ResponseEntity;
