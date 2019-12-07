@@ -52,3 +52,13 @@ export const OrdersService = {
         return axios.post("http://localhost:8080/api/orders/status", updateRequest);
     }
 }
+
+export const RunesService = {
+    getAll() {
+        return axios.get("http://localhost:8080/api/resources/runes");
+    },
+    
+    enchantRune(runeId) {
+        return axios.post("http://localhost:8080/api/resources/runes/enchant", {runeId});
+    }
+}

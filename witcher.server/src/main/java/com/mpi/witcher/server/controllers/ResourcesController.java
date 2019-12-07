@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.ResponseEntity.*;
 
 @RestController
-@RequestMapping("/api/resources")
+    @RequestMapping("/api/resources")
 public class ResourcesController {
     @GetMapping("/recipes")
     public ResponseEntity  GetAllRecipes() {
@@ -47,5 +47,31 @@ public class ResourcesController {
         } catch (Exception e) {
             return badRequest().body(e.getMessage());
         }
+    }
+
+    @GetMapping("/runes")
+    public ResponseEntity getAllRunes() {
+        //TODO возвращать руны
+        /*
+        * {
+        *       id: 12,
+        *       name: "Руна счастья",
+        *       category; "Редкие",
+        *       enchanted: true
+        *  }
+        * */
+        return ok(null);
+    }
+
+    @PostMapping("/runes/enchant")
+    public ResponseEntity enchantRune(@RequestBody Object request) {
+        //TODO переводить статус руны в зачарованные (enchanted: true),
+        // параметр
+        /*
+        * {
+        *   runeId: 12
+        * }
+        * */
+        return ok(null);
     }
 }

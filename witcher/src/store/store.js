@@ -2,6 +2,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import {AuthService, RecipesService, GrassService, OrdersService, ManagingService} from "@/services/rest.service";
+import {RunesService} from "../services/rest.service";
 
 Vue.use(Vuex);
 
@@ -129,6 +130,22 @@ const actions = {
     updateOrderStatus(context, updateRequest) {
         return new Promise((resolve, reject) => {
             OrdersService.updateStatus(updateRequest)
+                .then(() => resolve())
+                .catch(error => reject(error))
+        });
+    },
+
+    fetchRunes() {
+        return new Promise((resolve, reject) => {
+            RunesService.getAll()
+                .then((response) => resolve(response.data))
+                .catch(error => reject(error))
+        });
+    },
+    
+    enchantRune(context, runeId) {
+        return new Promise((resolve, reject) => {
+            RunesService.enchantRune(runeId)
                 .then(() => resolve())
                 .catch(error => reject(error))
         });

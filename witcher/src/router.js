@@ -11,6 +11,7 @@ import Grass from '@/components/resources/Grass';
 import ClientOrders from '@/components/client/ClientOrders';
 import store from './store/store'
 import Orders from './components/worker/Orders';
+import Runes from "./components/resources/Runes";
 
 Vue.use(VueRouter);
 
@@ -59,6 +60,11 @@ const routes = [
                 name: 'orders',
                 path: '/orders',
                 component: Orders,
+            },
+            {
+                name: 'runes',
+                path: '/runes',
+                component: Runes,
             }
         ]
       },

@@ -16,7 +16,7 @@
                 <span class="md-list-item-text">Животные</span>
             </md-list-item>
     
-            <md-list-item>
+            <md-list-item to="/runes">
                 <md-icon>photo_filter</md-icon>
                 <span class="md-list-item-text">Руны</span>
             </md-list-item>
