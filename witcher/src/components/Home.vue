@@ -39,14 +39,4 @@ export default {
     border: 1px solid rgba(#000, .12);
     min-height: 100vh;
   }
-
-   // Demo purposes only
-  .md-drawer {
-    width: 230px;
-    max-width: calc(100vw - 125px);
-  }
-
-  .user-name {
-    padding-left: 15px;
-  }
 </style>

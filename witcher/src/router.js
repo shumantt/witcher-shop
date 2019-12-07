@@ -21,37 +21,37 @@ const routes = [
         children: [
             {
                 name: 'receips',
-                path: '/home/receips',
+                path: '/receips',
                 component: Receipts,
             },
             {
                 name: 'grass',
-                path: '/home/grass',
+                path: '/grass',
                 component: Grass,
             },
             {
                 name: 'consumption',
-                path: '/home/consumption',
+                path: '/consumption',
                 component: Consumption,
             },
             {
                 name: 'report',
-                path: '/managing/report',
+                path: '/report',
                 component: Report,
             },
             {
                 name: 'Employees',
-                path: '/managing/employees',
+                path: '/employees',
                 component: Employees,
             },
             {
                 name: 'order',
-                path: '/client/order',
+                path: '/order',
                 component: Order
             },
             {
                 name: 'orders',
-                path: '/client/orders',
+                path: '/orders',
                 component: ClientOrders,
             }
         ]

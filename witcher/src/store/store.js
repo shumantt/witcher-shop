@@ -18,6 +18,10 @@ const state = {
 
 const getters = {
     isLoggedIn: state => !!state.user,
+    isEmployee: state => state.user.role == "EMPLOYEE" || state.user.role == "MANAGER",
+    isManager: state => state.user.role == "MANAGER",
+    isWorker: state => state.user.role == "EMPLOYEE",
+    isClient: state => state.user.role == "CLIENT"
 }
 
 const mutations = {
@@ -103,6 +107,14 @@ const actions = {
             OrdersService.addOrder(order)
                 .then((response) => resolve(response.data))
                 .catch(error => reject(error));
+        });
+    },
+    
+    cookPotion(context, recipeId) {
+        return new Promise((resolve, reject) => {
+           RecipesService.cookByRecipe(recipeId)
+               .then((response) => resolve(response.data))
+               .catch(error => reject(error))
         });
     }
 };

@@ -43,11 +43,12 @@
             <md-table v-model="filteredRecipes" @md-selected="onSelect" class="main-table" >
                 <md-table-row slot="md-table-row" slot-scope="{ item }" class="md-primary" md-selectable="single">
                     <md-table-cell md-label="Ресурсы">
-                        <md-checkbox v-model="item.enoughResources" class="md-primary" disabled/>
+                        <md-checkbox v-model="item.enoughResources" class="md-primary" disabled></md-checkbox>
                     </md-table-cell>
                     <md-table-cell md-label="Название">{{ item.name }}</md-table-cell>
                     <md-table-cell md-label="Категоря">{{ item.category }}</md-table-cell>
                     <md-table-cell md-label="Компоненты">{{ item.components }}</md-table-cell>
+                    <md-table-cell md-label="На складе">{{item.potionQuantity}}</md-table-cell>
                 </md-table-row>
             </md-table>
         </div>
@@ -65,10 +66,20 @@
                 </md-card-content>
 
                 <md-card-actions>
-                    <md-button class="md-raised">Подробнее</md-button>
+                    <md-button class="md-raised" @click="cookClick()">Приготовить</md-button>
+                    <md-button class="md-raised" @click="moreClick()">Подробнее</md-button>
                 </md-card-actions>
             </md-card>
         </div>
+        <md-dialog :md-active.sync="successCook">
+            <div class="modal-content">
+                <div>Зелье приготовлено успешно.</div>
+                <div>Количество зелья на складе обновилось.</div>
+            </div>
+            <md-dialog-actions>
+                <md-button class="md-primary" @click="successCook = false">Ок</md-button>
+            </md-dialog-actions>
+        </md-dialog>
     </div>
 </template>
 
@@ -87,7 +98,8 @@ export default {
             includeEnoughResources: true,
             selected: null,
             recipes: [],
-            filteredRecipes: []
+            filteredRecipes: [],
+            successCook: false
         }
     },
     computed: {
@@ -116,18 +128,38 @@ export default {
                     this.filterRecipes();
                 })
                 .catch(console.log);
-        }
+        },
+        
+        cookClick() {
+            this.$store.dispatch("cookPotion", this.selected.id)  
+                .then((_) => {
+                    this.successCook = true;
+                    this.fetchRecipes();
+                })
+                .catch(console.log)
+        },
+        
+        moreClick() {
+            window.open("https://shorturl.at/jqxzX", '_blank')
+        } 
     }
 }
 </script>
 
 <style scoped>
-.search-options .md-layout-item {
-    max-width: 300px;
-}
-
-.main-table {
-    max-height: 350px;
-}
-
+    .search-options .md-layout-item {
+        max-width: 300px;
+    }
+    
+    .main-table {
+        max-height: 340px;
+    } 
+    
+    .selected-info {
+        max-height: 100px;
+    }
+    
+    .modal-content {
+        padding: 10px;
+    }
 </style>

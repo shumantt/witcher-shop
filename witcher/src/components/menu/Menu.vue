@@ -3,7 +3,7 @@
         <md-toolbar class="md-large md-primary" md-elevation="0">
           <div>
             <md-avatar class="md-avatar-icon md-large md-accent">
-              <img :src="img" alt="Avatar">
+              <img :src="img" onerror="this.src='http://tiny.cc/vj3ahz'">
             </md-avatar>
           </div>
           <div class="user-name">{{userName}}</div>
@@ -30,8 +30,8 @@ export default {
         return {
             img: this.$store.state.user.pictureUrl,
             userName:  this.$store.state.user.name,
-            isEmployee: this.$store.state.user.role == "EMPLOYEE" || this.$store.state.user.role == "MANAGER",
-            isClient: this.$store.state.user.role == "CLIENT"
+            isEmployee: this.$store.getters.isEmployee,
+            isClient: this.$store.getters.isClient
         }
     },
     computed: {
@@ -49,5 +49,12 @@ export default {
 </script>
 
 <style>
+  .md-drawer {
+    width: 230px;
+    max-width: calc(100vw - 125px);
+  }
 
+  .user-name {
+    padding-left: 15px;
+  }
 </style>

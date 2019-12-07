@@ -1,6 +1,6 @@
 package com.mpi.witcher.server.controllers;
 
-import com.mpi.witcher.server.models.AuthenticationRequest;
+import com.mpi.witcher.server.models.Requests.AuthenticationRequest;
 import com.mpi.witcher.server.models.users.User;
 import com.mpi.witcher.server.models.users.WebUser;
 import com.mpi.witcher.server.repositories.UsersRepository;

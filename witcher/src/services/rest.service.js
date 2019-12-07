@@ -19,7 +19,11 @@ export const GrassService = {
 export const RecipesService = {
     getAll() {
         return axios.get("http://localhost:8080/api/resources/recipes");
-    }
+    },
+    
+    cookByRecipe(recipeId) {
+        return axios.post("http://localhost:8080/api/resources/recipes/cook", {recipeId});
+    } 
 }
 
 export const ManagingService = {

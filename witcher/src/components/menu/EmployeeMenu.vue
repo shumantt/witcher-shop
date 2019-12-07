@@ -19,11 +19,32 @@
             <md-icon>photo_filter</md-icon>
             <span class="md-list-item-text">Руны</span>
         </md-list-item>
+        <md-divider></md-divider>
+        <WorkerMenu v-if="isWorker" />
+        <ManagerMenu v-if="isManager"/>
     </div>
 </template>
 
 <script>
+import WorkerMenu from './WorkerMenu'
+import ManagerMenu from "./ManagerMenu";
 export default {
-    name: 'EmployeeMenu'
+    name: 'EmployeeMenu',
+    components: {
+        ManagerMenu,
+        WorkerMenu
+    },
+    data() {
+        return {
+            isWorker: this.$store.getters.isWorker,
+            isManager: this.$store.getters.isManager
+        }
+    }
 }
 </script>
+
+<style scoped>
+li {
+    list-style: none;
+}
+</style>

@@ -1,12 +1,7 @@
 <template>
     <div>
          <md-list>
-
-          
-
-          <md-divider></md-divider>
-
-          <md-list-item to="/home/consumption">
+          <md-list-item to="consumption">
             <md-icon>arrow_downward</md-icon>
             <span class="md-list-item-text">Расход/Приход</span>
           </md-list-item>
