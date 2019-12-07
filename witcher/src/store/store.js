@@ -101,6 +101,14 @@ const actions = {
                 .catch(error => reject(error));
         });
     },
+    
+    fetchClientOrders(context) {
+        return new Promise((resolve, reject) => {
+            OrdersService.getClientOrders(context.state.user.login)
+                .then((response) => resolve(response.data))
+                .catch(error => reject(error));
+        });
+    },
 
     addOrder(context,order) {
         return new Promise((resolve, reject) => {
@@ -115,6 +123,14 @@ const actions = {
            RecipesService.cookByRecipe(recipeId)
                .then((response) => resolve(response.data))
                .catch(error => reject(error))
+        });
+    },
+    
+    updateOrderStatus(context, updateRequest) {
+        return new Promise((resolve, reject) => {
+            OrdersService.updateStatus(updateRequest)
+                .then(() => resolve())
+                .catch(error => reject(error))
         });
     }
 };

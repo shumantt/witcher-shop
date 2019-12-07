@@ -53,13 +53,13 @@ export default {
             console.log(user);
             switch(user.role) {
                 case "EMPLOYEE":
-                    this.$router.push("/home/receips");
+                    this.$router.push("/receipts");
                     break;
                 case "MANAGER":
                     this.$router.push("/managing/report");
                     break;
                 case "CLIENT":
-                    this.$router.push("/client/order");
+                    this.$router.push("/client-orders");
                     break;
             }
         }

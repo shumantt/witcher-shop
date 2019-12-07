@@ -1,6 +1,6 @@
 package com.mpi.witcher.server.controllers;
 
-import com.mpi.witcher.server.models.Requests.AuthenticationRequest;
+import com.mpi.witcher.server.models.requests.AuthenticationRequest;
 import com.mpi.witcher.server.models.users.User;
 import com.mpi.witcher.server.models.users.WebUser;
 import com.mpi.witcher.server.repositories.UsersRepository;
@@ -42,7 +42,7 @@ public class AuthController {
                     .orElseThrow(() -> new UsernameNotFoundException("Login " + login + "not found"));
             String token = jwtTokenProvider.createToken(login, user.getRoles());
 
-            WebUser webUser = new WebUser(user.getName(), user.getPictureUrl(), user.getRole(), token);
+            WebUser webUser = new WebUser(user.getName(), user.getPictureUrl(), user.getRole(), token, login);
             return ok(webUser);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username/password supplied");

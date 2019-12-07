@@ -7,12 +7,14 @@ public class WebUser implements Serializable {
     private String pictureUrl;
     private String role;
     private String token;
+    private String login;
 
-    public WebUser(String name, String pictureUrl, String role, String token) {
+    public WebUser(String name, String pictureUrl, String role, String token, String login) {
         this.name = name;
         this.pictureUrl = pictureUrl;
         this.role = role;
         this.token = token;
+        this.login = login;
     }
 
     public String getName() {
@@ -45,5 +47,13 @@ public class WebUser implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 }

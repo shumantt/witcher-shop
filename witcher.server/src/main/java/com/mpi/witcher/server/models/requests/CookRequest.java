@@ -1,4 +1,4 @@
-package com.mpi.witcher.server.models.Requests;
+package com.mpi.witcher.server.models.requests;
 
 import java.io.Serializable;
 

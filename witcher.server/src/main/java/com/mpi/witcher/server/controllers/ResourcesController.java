@@ -1,8 +1,8 @@
 package com.mpi.witcher.server.controllers;
 
 import com.mpi.witcher.server.models.Grass;
-import com.mpi.witcher.server.models.Requests.CookRequest;
-import com.mpi.witcher.server.models.Requests.GrassConsumptionRequest;
+import com.mpi.witcher.server.models.requests.CookRequest;
+import com.mpi.witcher.server.models.requests.GrassConsumptionRequest;
 import com.mpi.witcher.server.repositories.GrassRepository;
 import com.mpi.witcher.server.repositories.RecipesRepository;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class ResourcesController {
 
     @PostMapping("/recipes/cook")
     public ResponseEntity CookPotionByRecipe(@RequestBody CookRequest cookRequest) {
-        //TODO увеличить количество
+        //TODO увеличить количество приготовленного зелья
         System.out.println(cookRequest.getRecipeId());
         return ok(null);
     }

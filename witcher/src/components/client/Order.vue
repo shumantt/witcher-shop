@@ -118,10 +118,12 @@ export default {
                 this.resultMessage = "Количестов должно быть больше 0";
                 return;
             }
+            let selectedRecipe = this.recipes.find(r => r.name === this.name && r.category === this.category);
             let order = {
-                category: this.category,
-                name: this.name,
-                quantity: this.number
+                potionId: selectedRecipe.id,
+                quantity: this.number,
+                clientLogin: this.$store.state.user.login,
+                phone: this.phone
             };
             this.$store.dispatch("addOrder", order)
                 .then(() =>  {

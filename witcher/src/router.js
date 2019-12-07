@@ -10,6 +10,7 @@ import Employees from '@/components/managing/Employees'
 import Grass from '@/components/resources/Grass';
 import ClientOrders from '@/components/client/ClientOrders';
 import store from './store/store'
+import Orders from './components/worker/Orders';
 
 Vue.use(VueRouter);
 
@@ -20,8 +21,8 @@ const routes = [
         component: Home,
         children: [
             {
-                name: 'receips',
-                path: '/receips',
+                name: 'receipts',
+                path: '/receipts',
                 component: Receipts,
             },
             {
@@ -50,9 +51,14 @@ const routes = [
                 component: Order
             },
             {
+                name: 'client-orders',
+                path: '/client-orders',
+                component: ClientOrders,
+            },
+            {
                 name: 'orders',
                 path: '/orders',
-                component: ClientOrders,
+                component: Orders,
             }
         ]
       },
