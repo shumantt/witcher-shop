@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.ResponseEntity.ok;
 
+//TODO тут надо придумать че-то, каккую инфу показывать, на фронте страницы примерно одинаково выглядят, главное подсунуть разные данные, не особо усложнять
 @RestController
 @RequestMapping("/api/report")
 public class ReportController {
