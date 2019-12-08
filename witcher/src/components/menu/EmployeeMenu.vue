@@ -11,7 +11,7 @@
                 <span class="md-list-item-text">Травы</span>
             </md-list-item>
     
-            <md-list-item>
+            <md-list-item to="/animals">
                 <md-icon>adb</md-icon>
                 <span class="md-list-item-text">Животные</span>
             </md-list-item>

@@ -2,7 +2,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import {AuthService, RecipesService, GrassService, OrdersService, ManagingService} from "@/services/rest.service";
-import {RunesService} from "../services/rest.service";
+import {AnimalsService, ResourceService, RunesService} from "../services/rest.service";
 
 Vue.use(Vuex);
 
@@ -147,6 +147,22 @@ const actions = {
         return new Promise((resolve, reject) => {
             RunesService.enchantRune(runeId)
                 .then(() => resolve())
+                .catch(error => reject(error))
+        });
+    },
+
+    fetchAnimals() {
+        return new Promise((resolve, reject) => {
+            AnimalsService.getAll()
+                .then((response) => resolve(response.data))
+                .catch(error => reject(error))
+        });
+    },
+    
+    getResourceInfo(context, {type, id}) {
+        return new Promise((resolve, reject) => {
+            ResourceService.getResourceInfo(type, id)
+                .then((response) => resolve(response.data))
                 .catch(error => reject(error))
         });
     }

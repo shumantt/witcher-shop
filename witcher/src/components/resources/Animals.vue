@@ -9,12 +9,12 @@
                     </md-field>
                 </div>
                 <div class="md-layout-item">
-                    <md-button class="md-raised" @click="filterGrass">Искать</md-button>
+                    <md-button class="md-raised" @click="filterAnimals">Искать</md-button>
                 </div>
             </div>
         </div>
         <div class="table-container">
-            <md-table v-model="filteredGrass" class="main-table"  @md-selected="onSelect" >
+            <md-table v-model="filteredAnimals" class="main-table"  @md-selected="onSelect" >
                 <md-table-row slot="md-table-row" slot-scope="{ item }" class="md-primary" md-selectable="single">
                     <md-table-cell md-label="Название">{{ item.name }}</md-table-cell>
                     <md-table-cell md-label="Количество">{{ item.quantity }}</md-table-cell>
@@ -43,42 +43,56 @@
 </template>
 
 <script>
-export default {
-    name: 'Grass',
-    data() {
-        return {
-            grass: [],
-            filteredGrass: [],
-            selected: null,
-            textSearch: "",
-        }
-    },
-    mounted() {
-        this.$store.dispatch("fetchGrass")
-            .then((grass) => {
-                this.grass = grass;
-                this.filteredGrass = grass;
-            })
-            .catch((error) => console.log(error));
-    },
+    const fakeData = 
+            [{
+                id: 2,
+                name: "Noga Zver",
+                description: "Ogramnaya lapa s kogtyami",
+                quantity: 12
+            },
+            {
+                id: 3,
+                name: "2Noga Zver",
+                description: "2Ogramnaya lapa2 s kogtyami",
+                quantity: 5
+            }];
     
-    methods: {
-        moreClick() {
-            this.$router.push(`/info?type=grass&id=${this.selected.id}`);
+    export default {
+        name: "Animals",
+        data() {
+            return {
+                animals: [],
+                filteredAnimals: [],
+                selected: null,
+                searchText: "",
+            }
         },
-        
-        onSelect(grass) {
-            this.selected = grass;
+        mounted() {
+            this.$store.dispatch("fetchAnimals")
+                .then((animals) => {
+                    this.animals = fakeData;
+                    this.filteredAnimals = fakeData;
+                })
+                .catch((error) => console.log(error));
         },
-        
-        filterGrass() {
-            this.filteredGrass = this.grass;
-            if(this.searchText) {
-                this.filteredGrass = this.grass.filter(r => r.name.includes(this.searchText));
+
+        methods: {
+            moreClick() {
+                this.$router.push(`/info?type=animals&id=${this.selected.id}`);
+            },
+
+            onSelect(animal) {
+                this.selected = animal;
+            },
+
+            filterAnimals() {
+                this.filteredAnimals = this.animals;
+                if(this.searchText) {
+                    this.filteredAnimals = this.animals.filter(r => r.name.includes(this.searchText));
+                }
             }
         }
-    } 
-}
+    }
 </script>
 
 <style scoped>

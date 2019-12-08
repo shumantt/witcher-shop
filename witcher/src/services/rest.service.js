@@ -62,3 +62,15 @@ export const RunesService = {
         return axios.post("http://localhost:8080/api/resources/runes/enchant", {runeId});
     }
 }
+
+export const AnimalsService = {
+    getAll() {
+        return axios.get("http://localhost:8080/api/resources/animals");
+    }
+}
+
+export const ResourceService = {
+    getResourceInfo(type, id) {
+        return  axios.get(`http://localhost:8080/api/resources/info?type=${type}&id=${id}`);
+    }
+}

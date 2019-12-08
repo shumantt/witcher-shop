@@ -53,12 +53,12 @@ public class ResourcesController {
     public ResponseEntity getAllRunes() {
         //TODO возвращать руны
         /*
-        * {
+        * [{
         *       id: 12,
         *       name: "Руна счастья",
         *       category; "Редкие",
         *       enchanted: true
-        *  }
+        *  }]
         * */
         return ok(null);
     }
@@ -71,6 +71,42 @@ public class ResourcesController {
         * {
         *   runeId: 12
         * }
+        * */
+        return ok(null);
+    }
+
+    @GetMapping("/animals")
+    public ResponseEntity getAllAnimals() {
+        // TODO вернуть список животных ресурсов
+        /*
+        * [{
+        *   id: 2,
+        *   name: "Noga Zver",
+        *   description: "Ogramnaya lapa s kogtyami",
+        *   quantity: 12
+        * } ]
+        *
+        *
+        * */
+        return ok(null);
+    }
+
+    @GetMapping("/info")
+    public ResponseEntity getResourceInfo(@RequestParam String type, @RequestParam long id) {
+        // TODO получить имя ресурса, описание, количество и историю добычи
+        // Параметры: type- тип ("grass","runes", "animals", "receipts  "), id - ид ресурса
+        /*
+        *
+        *
+        * {
+              name: "Драконьи слезы",
+              description: "Слезы страшного дракона",
+              quantity: 5,
+              history: [{
+                  name: 'Иванов Сергей Михайлович',
+                  quantity: 5,
+                  date: "01.10.2019"}]
+           }
         * */
         return ok(null);
     }

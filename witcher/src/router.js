@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import Home from '@/components/Home';
 import Authorization from '@/components/Authorization';
 import Receipts from '@/components/resources/Receipts';
-import Consumption from '@/components/resources/Consumption';
+import Consumption from './components/worker/Consumption';
 import Order from '@/components/client/Order';
 import Report from '@/components/managing/Report';
 import Employees from '@/components/managing/Employees'
@@ -12,6 +12,8 @@ import ClientOrders from '@/components/client/ClientOrders';
 import store from './store/store'
 import Orders from './components/worker/Orders';
 import Runes from "./components/resources/Runes";
+import Animals from './components/resources/Animals';
+import ResourceInfo from "./components/resources/ResourceInfo";
 
 Vue.use(VueRouter);
 
@@ -65,6 +67,16 @@ const routes = [
                 name: 'runes',
                 path: '/runes',
                 component: Runes,
+            },
+            {
+                name: 'animals',
+                path: '/animals',
+                component: Animals
+            },
+            {
+                name: 'info',
+                path: '/info',
+                component: ResourceInfo
             }
         ]
       },

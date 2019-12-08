@@ -6,10 +6,10 @@
             <span class="md-list-item-text">Расход/Приход</span>
           </md-list-item>
 
-          <md-list-item>
+        <!--  <md-list-item>
             <md-icon>local_drink</md-icon>
             <span class="md-list-item-text">Зелья</span>
-          </md-list-item>
+          </md-list-item>-->
 
           <md-list-item to="/orders">
             <md-icon>shopping_cart</md-icon>

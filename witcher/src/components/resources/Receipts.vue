@@ -140,7 +140,7 @@ export default {
         },
         
         moreClick() {
-            window.open("https://shorturl.at/jqxzX", '_blank')
+            this.$router.push(`/info?type=receipts&id=${this.selected.id}`);
         } 
     }
 }

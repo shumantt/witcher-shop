@@ -85,7 +85,7 @@
             },
             
             moreClick() {
-                window.open("https://shorturl.at/jqxzX", '_blank');
+                this.$router.push(`/info?type=runes &id=${this.selected.id}`);
             },
             
             enchantClick() {
