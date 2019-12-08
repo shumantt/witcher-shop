@@ -2,7 +2,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import {AuthService, RecipesService, GrassService, OrdersService, ManagingService} from "@/services/rest.service";
-import {AnimalsService, ResourceService, RunesService} from "../services/rest.service";
+import {AnimalsService, ReportService, ResourceService, RunesService} from "../services/rest.service";
 
 Vue.use(Vuex);
 
@@ -173,7 +173,22 @@ const actions = {
                 .then(() => resolve())
                 .catch(error => reject(error))
         });
-    }
+    },
+    
+    getBaseReport(context, type) {
+        return new Promise((resolve, reject) => {
+            switch (type) {
+                case "base": 
+                    return ReportService.getBaseReport()
+                        .then((response) => resolve(response.data))
+                        .catch(error => reject(error));
+                case "consumption":
+                    return ReportService.getConsumptionReport()
+                        .then((response) => resolve(response.data))
+                        .catch(error => reject(error));
+            }
+        });
+    },
 };
 
 const store = new Vuex.Store({

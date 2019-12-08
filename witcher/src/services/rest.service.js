@@ -78,3 +78,13 @@ export const ResourceService = {
         return axios.post("http://localhost:8080/api/resources/consumpt", consumptionInfo);
     }
 }
+
+export const ReportService = {
+    getBaseReport() {
+        return axios.get("http://localhost:8080/api/report/base");
+    },
+
+    getConsumptionReport() {
+        return axios.get("http://localhost:8080/api/report/consumption");
+    },
+}

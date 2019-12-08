@@ -2,11 +2,11 @@
     <div class="report-container">
          <md-tabs>
             <md-tab id="tab-base" md-label="Общий" exact>
-                <BaseReport/>
+                <BaseReport type="base"/>
             </md-tab>
 
             <md-tab id="tab-consumptions" md-label="Расходы" >
-                Расходы
+                <BaseReport type="consumption"/>
             </md-tab>
 
             <md-tab id="tab-workload" md-label="Загруженность" >

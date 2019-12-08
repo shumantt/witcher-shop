@@ -56,7 +56,7 @@ export default {
                     this.$router.push("/receipts");
                     break;
                 case "MANAGER":
-                    this.$router.push("/managing/report");
+                    this.$router.push("/report");
                     break;
                 case "CLIENT":
                     this.$router.push("/client-orders");
