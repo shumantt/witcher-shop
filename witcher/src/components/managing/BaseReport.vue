@@ -103,7 +103,7 @@ export default {
                this.$store.dispatch("getBaseReport", {type: this.type, employeeId: this.employee, period: this.period})
                    .then((data) => {
                        this.data = JSON.parse(JSON.stringify(fakeData));
-                       this.data.reportData.push({name: this.employee || 'unknown', value: this.period || 'unknown'});
+                       this.data.reportData.push({name: this.employee || this.type, value: this.period || this.type});
                    })
                    .catch(console.log)
         }

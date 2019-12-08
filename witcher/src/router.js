@@ -15,6 +15,7 @@ import Runes from "./components/resources/Runes";
 import Animals from './components/resources/Animals';
 import ResourceInfo from "./components/resources/ResourceInfo";
 import AddReceipt from "./components/resources/AddReceipt";
+import ReportView from "./components/managing/ReportView";
 
 Vue.use(VueRouter);
 
@@ -83,6 +84,11 @@ const routes = [
                 name: 'addReceipt',
                 path: '/receipts/add',
                 component: AddReceipt
+            },
+            {
+                name: 'reportView',
+                path: 'report/view',
+                component: ReportView
             }
         ]
       },

@@ -7,6 +7,10 @@
             <md-table-row slot="md-table-row" slot-scope="{ item }" >
                 <md-table-cell md-label="Имя">{{ item.name }}</md-table-cell>
                 <md-table-cell md-label="Должность">{{ item.role }}</md-table-cell>
+                <md-table-cell md-label="">
+                    <md-button v-if="item.role == 'EMPLOYEE'" class="md-raised" @click="consumptionReport(item.login)">Загруженность</md-button>
+                    <md-button v-if="item.role == 'EMPLOYEE'" class="md-raised" @click="kpiReport(item.login)">KPI</md-button>
+                </md-table-cell>
             </md-table-row>
         </md-table>
         <div>
@@ -45,6 +49,14 @@ export default {
     methods: {
         addUser() {
             this.$store.dispatch("addUser", { login: this.name, role: this.role, password: 123 })
+        },
+
+        consumptionReport(employeeId) {
+            this.$router.push('/report/view?type=employee-workload&employeeId=' + employeeId)
+        },
+
+        kpiReport(employeeId) {
+            this.$router.push('/report/view?type=employee-kpi&employeeId=' + employeeId)
         }
     }
 }
