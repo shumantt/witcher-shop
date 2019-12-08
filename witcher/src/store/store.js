@@ -87,9 +87,9 @@ const actions = {
     },
 
 
-    consumptGrass(context, consumptionRequest) {
+    consumpt(context, consumptionRequest) {
         return new Promise((resolve, reject) => {
-            GrassService.consumptGrass(consumptionRequest)
+            ResourceService.consumpt(consumptionRequest)
                 .then((response) => resolve(response.data))
                 .catch(error => reject(error));
         });

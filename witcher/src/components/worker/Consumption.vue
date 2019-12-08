@@ -1,115 +1,79 @@
 <template>
     <div class="consumption-form">
         <div class="md-title">Расход/приход ресурса</div>
-        <div class="category selection">
-            <div class="md-layout">
-                <div class="md-layout-item label">
-                    <div class="md-subtitle">Категория</div>
-                </div>
-                <div class="md-layout-item selector">
-                     <md-field>
-                        <md-select v-model="category" name="category" id="category" :md-selected="categorySelected()">
-                            <md-option value="Травы">Травы</md-option>
-                            <md-option value="Животные" :disabled="true">Животные</md-option>
-                            <md-option value="Руны" :disabled="true">Руны</md-option>
-                        </md-select>
-                    </md-field>
-                </div>
-            </div>
-        </div>
-        <div class="name selection">
-            <div class="md-layout">
-                <div class="md-layout-item label">
-                    <div class="md-subtitle">Наименование</div>
-                </div>
-                <div class="md-layout-item selector">
-                   <md-autocomplete v-model="name" :md-options="names" :md-selected="selectedName()">
-                   </md-autocomplete>
-                </div>
-            </div>
-        </div>
-        <div class="quantity selection">
-            <div class="md-layout">
-                <div class="md-layout-item label">
-                    <div class="md-subtitle">Количество</div>
-                </div>
-                <div class="md-layout-item selector">
-                     <md-field>
-                        <md-input v-model="number" type="number" :min="0" :max="max"></md-input>
-                    </md-field>
-                </div>
-            </div>
-        </div>
+        <ResourceSelection ref="selector"
+                v-on:quantity-change="quantityChanged"
+                v-on:type-change="typeChanged"
+                v-on:name-change="nameChanged"
+                v-on:id-change="idChanged"
+        />
         <div class="buttons-row">
             <md-button class="md-raised left" :disabled="!actionEnabled" @click="makeConsumption()">Записать расход</md-button>
-            <md-button class="md-raised right" :disabled="!actionEnabled" @click="addGrass()">Записать приход</md-button>
+            <md-button class="md-raised right" :disabled="!actionEnabled" @click="addResource()">Записать приход</md-button>
         </div>
         <div v-if="resultMessage">{{resultMessage}}</div>
     </div>
 </template>
 
 <script>
+import ResourceSelection from "../resources/ResourceSelection";
 export default {
     name: 'Consumption',
+    components: {ResourceSelection},
     data() {
         return {
-            category: null,
+            type: "",
+            name: "",
             resultMessage: null,
-            name: null,
-            number: 0,
-            names: [],
-            grass:[],
-            max: 0
+            id: -1,
+            number: 1,
         }
     },
     computed: {
         actionEnabled() {
-            return this.category != null && this.name != null && this.category != '' && this.name != '';
+            return this.number > 0 && this.type && this.name;
         }
     },
     methods: {
         clear() {
-            this.category = null;
-            this.name = null;
+            this.type = "";
+            this.name = "";
             this.number = 0;
+            this.id = -1;
             this.resultMessage = null;
-            this.names = [];
+            this.$refs.selector.clear();
         },
-        categorySelected() {
-            if(!this.category)
-                return;
-            this.$store.dispatch("fetchGrass")
-                .then((grass) => {
-                    this.names = grass.map(g => g.name);
-                    this.grass = grass;
-                })
-                .catch((error) => console.log(error));
+        quantityChanged(value) {
+            this.number = value;
         },
 
-        selectedName() {
-            if(!this.name)
-                return;
-            let selectedGrass = this.grass.find(g => g.name == this.name);
-            this.max = selectedGrass.quantity;
+        typeChanged(value) {
+            this.type = value;
+        },
+
+        nameChanged(value) {
+            this.name = value;
+        },
+
+        idChanged(value) {
+            this.id = value;
         },
 
         makeConsumption() {
             this.resultMessage = null;
-            if(!this.category || !this.name) {
+            if(!this.type || !this.name) {
                 this.resultMessage = "Укажите категорию и наименование ресурса";
                 return;
             }
 
-            let selectedGrass = this.grass.find(g => g.name == this.name);
-
-            if(this.number < 0 || this.number > selectedGrass.quantity) {
+           /* if(this.number < 0 || this.number > selectedGrass.quantity) {
                 this.resultMessage = `Неверное количество. Введите количестов от ${0} до ${this.number}`;
                 return;
-            }
+            }*/
 
-            this.$store.dispatch("consumptGrass", { id: selectedGrass.id, amount: this.number, isPlus: false })
+            this.$store.dispatch("consumpt", { id: this.id, type: this.type, amount: this.number, isPlus: false })
                 .then(() => {
-                    let res = `Успешно записан расход. Категория: ${this.category}. Наименование: ${this.name}. Количество: ${this.number}.`;
+                    let res = `Успешно записан расход. Наименование: ${this.name}. Количество: ${this.number}.`;
                     this.clear();
                     this.resultMessage = res;
                 })
@@ -118,23 +82,22 @@ export default {
                     this.resultMessage = "Ошибка";
                 });
         },
-        addGrass() {
+        
+        addResource() {
             this.resultMessage = null;
-            if(!this.category || !this.name) {
+            if(!this.type || !this.name) {
                 this.resultMessage = "Укажите категорию и наименование ресурса";
                 return;
             }
-
-            let selectedGrass = this.grass.find(g => g.name == this.name);
 
             if(this.number < 0) {
                 this.resultMessage = `Неверное количество. Введите количестов больше 0`;
                 return;
             }
 
-            this.$store.dispatch("consumptGrass", { id: selectedGrass.id, amount: this.number, isPlus: true })
+            this.$store.dispatch("consumpt", { id: this.id, type: this.type, amount: this.number, isPlus: true })
                 .then(() => {
-                    let res = `Успешно записан приход. Категория: ${this.category}. Наименование: ${this.name}. Количество: ${this.number}.`;
+                    let res = `Успешно записан приход. Наименование: ${this.name}. Количество: ${this.number}.`;
                     this.clear();
                     this.resultMessage = res;
                 })

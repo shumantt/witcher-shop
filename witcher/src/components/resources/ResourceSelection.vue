@@ -138,6 +138,17 @@
                 this.$emit('name-change', this.name);
                 this.$emit('id-change', this.selectedValues.find(v => v.name == this.name).id);
             },
+            
+            clear() {
+                this.type="";
+                this.prevType="";
+                this.name="";
+                this.prevName="";
+                this.id=1;
+                this.quantity=1;
+                this.selectedValues=[];
+                this.names=[];
+            }
         }
     }
 </script>

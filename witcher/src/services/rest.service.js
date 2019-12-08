@@ -10,10 +10,6 @@ export const GrassService = {
     getAll() {
         return axios.get("http://localhost:8080/api/resources/grass");
     },
-
-    consumptGrass(consumptionInfo) {
-        return axios.put("http://localhost:8080/api/resources/grass", consumptionInfo);
-    }
 }
 
 export const RecipesService = {
@@ -76,5 +72,9 @@ export const AnimalsService = {
 export const ResourceService = {
     getResourceInfo(type, id) {
         return  axios.get(`http://localhost:8080/api/resources/info?type=${type}&id=${id}`);
+    },
+
+    consumpt(consumptionInfo) {
+        return axios.post("http://localhost:8080/api/resources/consumpt", consumptionInfo);
     }
 }

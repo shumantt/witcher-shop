@@ -2,7 +2,7 @@ package com.mpi.witcher.server.controllers;
 
 import com.mpi.witcher.server.models.Grass;
 import com.mpi.witcher.server.models.requests.CookRequest;
-import com.mpi.witcher.server.models.requests.GrassConsumptionRequest;
+import com.mpi.witcher.server.models.requests.ConsumptionRequest;
 import com.mpi.witcher.server.repositories.GrassRepository;
 import com.mpi.witcher.server.repositories.RecipesRepository;
 import org.springframework.http.ResponseEntity;
@@ -51,8 +51,8 @@ public class ResourcesController {
         return ok(GrassRepository.Grass);
     }
 
-    @PutMapping("/grass")
-    public ResponseEntity changeAmountGrass(@RequestBody GrassConsumptionRequest request) {
+    @PostMapping("/consumpt") //TODO сделать для всех ресурсов в зависимотси от типа request.type = animals, grass, runes
+    public ResponseEntity changeAmount(@RequestBody ConsumptionRequest request) {
         try {
             Grass foundGrass = GrassRepository.Grass.stream().filter(g -> g.getId() == request.getId())
                     .findFirst()
