@@ -14,6 +14,7 @@ import Orders from './components/worker/Orders';
 import Runes from "./components/resources/Runes";
 import Animals from './components/resources/Animals';
 import ResourceInfo from "./components/resources/ResourceInfo";
+import AddReceipt from "./components/resources/AddReceipt";
 
 Vue.use(VueRouter);
 
@@ -77,6 +78,11 @@ const routes = [
                 name: 'info',
                 path: '/info',
                 component: ResourceInfo
+            },
+            {
+                name: 'addReceipt',
+                path: '/receipts/add',
+                component: AddReceipt
             }
         ]
       },

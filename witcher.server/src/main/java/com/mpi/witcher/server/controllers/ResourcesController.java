@@ -18,6 +18,27 @@ public class ResourcesController {
         return ok(RecipesRepository.Recipes);
     }
 
+    @PostMapping("/recipes")
+    public ResponseEntity  addReceipt(@RequestBody Object addReceiptRequest) {
+        //TODO Добавление нового рецепта
+        /* параметр
+        * {
+        *   name: "Убийца духов",
+            description: "Убивает духов",
+            instruction: "Жарить, пока не отклеются обои",
+            ingredients: [ //array
+            * {
+            *   type: "grass", //(+animals, runes)
+                id: 1, //ид ресурса - травы, животного или руны
+                quantity: 5
+            * }
+            * ]
+        * }
+        *
+        * */
+        return ok(null);
+    }
+
     @PostMapping("/recipes/cook")
     public ResponseEntity CookPotionByRecipe(@RequestBody CookRequest cookRequest) {
         //TODO увеличить количество приготовленного зелья

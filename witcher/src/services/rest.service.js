@@ -23,7 +23,11 @@ export const RecipesService = {
     
     cookByRecipe(recipeId) {
         return axios.post("http://localhost:8080/api/resources/recipes/cook", {recipeId});
-    } 
+    },
+    
+    addReceipt(request) {
+        return axios.post("http://localhost:8080/api/resources/recipes", request);
+    }
 }
 
 export const ManagingService = {

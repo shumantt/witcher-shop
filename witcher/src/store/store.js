@@ -165,6 +165,14 @@ const actions = {
                 .then((response) => resolve(response.data))
                 .catch(error => reject(error))
         });
+    },
+    
+    addReceipt(context, request) {
+        return new Promise((resolve, reject) => {
+            RecipesService.addReceipt(request)
+                .then(() => resolve())
+                .catch(error => reject(error))
+        });
     }
 };
 

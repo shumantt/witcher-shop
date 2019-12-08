@@ -10,6 +10,7 @@
                 </div>
                 <div class="md-layout-item">
                     <md-button class="md-raised" @click="filterRecipes">Искать</md-button>
+                    <md-button class="md-raised" @click="addRecipe" v-if="isWorker">Добавить рецепт</md-button>
                 </div>
             </div>
         </div>
@@ -99,7 +100,8 @@ export default {
             selected: null,
             recipes: [],
             filteredRecipes: [],
-            successCook: false
+            successCook: false,
+            isWorker: this.$store.getters.isWorker
         }
     },
     computed: {
@@ -141,7 +143,11 @@ export default {
         
         moreClick() {
             this.$router.push(`/info?type=receipts&id=${this.selected.id}`);
-        } 
+        } ,
+
+        addRecipe() {
+            this.$router.push('/receipts/add');
+        }
     }
 }
 </script>
