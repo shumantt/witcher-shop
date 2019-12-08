@@ -3,6 +3,7 @@ package com.mpi.witcher.server.controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -44,8 +45,29 @@ public class ReportController {
     }
 
     @GetMapping("/consumption")
-    public ResponseEntity getConsumptionReport() {
-        // TODO отчет расходов ресурсов в лавке
+    public ResponseEntity getConsumptionReport(@RequestParam int period) {
+        // TODO отчет расходов ресурсов в лавке за последние period месяцев
+        // формат ответа такой же, как в getBaseReport
+        return ok(null);
+    }
+
+    @GetMapping("/workload")
+    public ResponseEntity getWorkloadReport() {
+        // TODO общий отчет загруженности по всем сотрудникам
+        // формат ответа такой же, как в getBaseReport
+        return ok(null);
+    }
+
+    @GetMapping("/workload/employee")
+    public ResponseEntity getWorkloadReport(@RequestParam String login) {
+        // TODO отчет загруженности конкретного сотрудника
+        // формат ответа такой же, как в getBaseReport
+        return ok(null);
+    }
+
+    @GetMapping("/kpi/employee")
+    public ResponseEntity getKpiReport(@RequestParam String login) {
+        // TODO отчет kpi конкретного сотрудника
         // формат ответа такой же, как в getBaseReport
         return ok(null);
     }

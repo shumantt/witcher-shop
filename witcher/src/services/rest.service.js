@@ -84,7 +84,19 @@ export const ReportService = {
         return axios.get("http://localhost:8080/api/report/base");
     },
 
-    getConsumptionReport() {
-        return axios.get("http://localhost:8080/api/report/consumption");
+    getConsumptionReport(period) {
+        return axios.get("http://localhost:8080/api/report/consumption?period="+period);
     },
+
+    getWorkloadReport() {
+        return axios.get("http://localhost:8080/api/report/workload");
+    },
+    
+    getEmployeeWorkloadReport(employeeId) {
+        return axios.get("http://localhost:8080/api/report/workload/employee?login="+employeeId);
+    },
+
+    getEmployeeKpiReport(employeeId) {
+        return axios.get("http://localhost:8080/api/report/kpi/employee?login="+employeeId);
+    }
 }

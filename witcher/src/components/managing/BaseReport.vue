@@ -72,10 +72,21 @@ const fakeData = {
 
 export default {
     name: 'BaseReport',
-    props:['type'],
+    props:['type', 'employee', 'period'],
     components: {
       LineChart
     },
+    
+    watch: {
+        employee: function(value) {
+            this.fetchData();
+        },
+
+        period: function(value) {
+            this.fetchData();
+        },
+    },
+    
     mounted() {
         this.fetchData();
     },
@@ -89,9 +100,10 @@ export default {
     },
     methods: {
         fetchData() {
-               this.$store.dispatch("getBaseReport", this.type)
+               this.$store.dispatch("getBaseReport", {type: this.type, employeeId: this.employee, period: this.period})
                    .then((data) => {
-                       this.data = fakeData;
+                       this.data = JSON.parse(JSON.stringify(fakeData));
+                       this.data.reportData.push({name: this.employee || 'unknown', value: this.period || 'unknown'});
                    })
                    .catch(console.log)
         }

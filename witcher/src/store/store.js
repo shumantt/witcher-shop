@@ -175,7 +175,7 @@ const actions = {
         });
     },
     
-    getBaseReport(context, type) {
+    getBaseReport(context, {type, employeeId, period}) {
         return new Promise((resolve, reject) => {
             switch (type) {
                 case "base": 
@@ -183,7 +183,19 @@ const actions = {
                         .then((response) => resolve(response.data))
                         .catch(error => reject(error));
                 case "consumption":
-                    return ReportService.getConsumptionReport()
+                    return ReportService.getConsumptionReport(period)
+                        .then((response) => resolve(response.data))
+                        .catch(error => reject(error));
+                case "workload":
+                    return ReportService.getWorkloadReport()
+                        .then((response) => resolve(response.data))
+                        .catch(error => reject(error));
+                case "employee-workload":
+                    return ReportService.getEmployeeWorkloadReport(employeeId)
+                        .then((response) => resolve(response.data))
+                        .catch(error => reject(error));
+                case "employee-kpi":
+                    return ReportService.getEmployeeKpiReport(employeeId)
                         .then((response) => resolve(response.data))
                         .catch(error => reject(error));
             }
