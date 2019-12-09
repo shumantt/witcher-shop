@@ -19,7 +19,7 @@ public class ResourcesController {
     }
 
     @PostMapping("/recipes")
-    public ResponseEntity  addReceipt(@RequestBody Object addReceiptRequest) {
+    public ResponseEntity addRecipe(@RequestBody Object addRecipeRequest) {
         //TODO Добавление нового рецепта
         /* параметр
         * {
