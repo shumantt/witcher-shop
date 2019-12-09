@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class UsersRepository {
-    private static final String CreateUserSql = "INSERT INTO users (login, name, role_id, password) VALUES (?, ?, ?, ?)";
-    private static final String FindUserSql = "SELECT users.*, roles.name \"role\" FROM users, roles WHERE users.role_id = roles.id AND users.name = ?";
+    private static final String CreateUserSql = "INSERT INTO users (login, name, role_id, password) VALUES (?, ?, ?, ?);";
+    private static final String FindUserSql = "SELECT users.*, roles.name \"role\" FROM users, roles WHERE users.role_id = roles.id AND users.name = ?;";
 
     private static PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     public static ArrayList<User> Users = new ArrayList<User>() {
@@ -29,7 +29,7 @@ public class UsersRepository {
             statement.setString(2, login);
             statement.setInt(3, role);
             statement.setString(4, password);
-            statement.executeQuery();
+            statement.execute();
         } catch (SQLException e) {
             return false;
         }

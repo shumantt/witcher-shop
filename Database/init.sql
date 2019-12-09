@@ -8,12 +8,14 @@ CREATE TABLE goods (
     name VARCHAR(30) UNIQUE NOT NULL,
     description TEXT,
     quantity integer DEFAULT 0,
-    is_producable boolean DEFAULT false
+    is_producable boolean DEFAULT false,
+    instruction TEXT
 );
 
 CREATE TABLE recipe_goods (
     recipe_id integer NOT NULL REFERENCES goods (id) ON DELETE CASCADE,
     component_id integer NOT NULL REFERENCES goods (id) ON DELETE RESTRICT,
+    required_quantity integer DEFAULT 1,
     PRIMARY KEY (recipe_id, component_id)
 );
 

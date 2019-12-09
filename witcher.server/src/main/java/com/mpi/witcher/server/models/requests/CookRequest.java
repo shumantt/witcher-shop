@@ -3,19 +3,19 @@ package com.mpi.witcher.server.models.requests;
 import java.io.Serializable;
 
 public class CookRequest implements Serializable {
-    private long recipeId;
+    private int recipeId;
 
     public CookRequest() {}
 
-    public CookRequest(long recipeId) {
+    public CookRequest(int recipeId) {
         this.recipeId = recipeId;
     }
 
-    public long getRecipeId() {
+    public int getRecipeId() {
         return recipeId;
     }
 
-    public void setRecipeId(long recipeId) {
+    public void setRecipeId(int recipeId) {
         this.recipeId = recipeId;
     }
 }
