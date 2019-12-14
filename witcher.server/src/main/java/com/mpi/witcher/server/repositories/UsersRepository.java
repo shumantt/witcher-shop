@@ -4,10 +4,14 @@ import com.mpi.witcher.server.models.users.User;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Optional;
 
 public class UsersRepository {
+    private static final String CreateUserSql = "INSERT INTO users (login, name, role_id, password) VALUES (?, ?, ?, ?);";
+    private static final String FindUserSql = "SELECT users.*, roles.name \"role\" FROM users, roles WHERE users.role_id = roles.id AND users.name = ?;";
+
     private static PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     public static ArrayList<User> Users = new ArrayList<User>() {
         {
@@ -17,28 +21,38 @@ public class UsersRepository {
         }
     };
 
-    public static boolean createUser(String login, String password, String role) {
-        for (User user : Users) {
-            if (user.getLogin().toLowerCase().equals(login)) {
-                return false;
-            }
+    public static boolean createUser(String login, String password, int role) {
+        try {
+            Connection connection = Database.connect();
+            PreparedStatement statement = connection.prepareStatement(CreateUserSql);
+            statement.setString(1, login);
+            statement.setString(2, login);
+            statement.setInt(3, role);
+            statement.setString(4, password);
+            statement.execute();
+        } catch (SQLException e) {
+            return false;
         }
-        Users.add(new User(login, login, "/img/witcher-face.jpg", role.toUpperCase(), passwordEncoder.encode(password)));
         return true;
     }
 
     public static Optional<User> findByUserName(String name) {
-        User currentUser = null;
-        for (User user: UsersRepository.Users) {
-            if(user.getUsername().equals(name)) {
-                currentUser = user;
-                break;
-            }
-        }
-        if(currentUser == null) {
+        try {
+            Connection connection = Database.connect();
+            PreparedStatement statement = connection.prepareStatement(FindUserSql);
+            statement.setString(1, name);
+            ResultSet resultSet = statement.executeQuery();
+
+            resultSet.next();
+            return Optional.of(new User(
+                    resultSet.getString("login"),
+                    resultSet.getString("name"),
+                    resultSet.getString("picture_url"),
+                    resultSet.getString("role"),
+                    resultSet.getString("password")
+            ));
+        } catch (SQLException e) {
             return Optional.empty();
         }
-
-        return Optional.of(currentUser);
     }
 }

@@ -1,8 +1,10 @@
 package com.mpi.witcher.server.controllers;
 
 import com.mpi.witcher.server.models.Grass;
+import com.mpi.witcher.server.models.requests.AddProducableItemRequest;
 import com.mpi.witcher.server.models.requests.CookRequest;
 import com.mpi.witcher.server.models.requests.ConsumptionRequest;
+import com.mpi.witcher.server.repositories.GoodsRepository;
 import com.mpi.witcher.server.repositories.GrassRepository;
 import com.mpi.witcher.server.repositories.RecipesRepository;
 import org.springframework.http.ResponseEntity;
@@ -13,36 +15,27 @@ import static org.springframework.http.ResponseEntity.*;
 @RestController
 @RequestMapping("/api/resources")
 public class ResourcesController {
+
+    private final GoodsRepository goodsRepository = new GoodsRepository();
+
+
     @GetMapping("/recipes")
     public ResponseEntity  GetAllRecipes() {
         return ok(RecipesRepository.Recipes);
     }
 
     @PostMapping("/recipes")
-    public ResponseEntity  addReceipt(@RequestBody Object addReceiptRequest) {
-        //TODO Добавление нового рецепта
-        /* параметр
-        * {
-        *   name: "Убийца духов",
-            description: "Убивает духов",
-            instruction: "Жарить, пока не отклеются обои",
-            ingredients: [ //array
-            * {
-            *   type: "grass", //(+animals, runes)
-                id: 1, //ид ресурса - травы, животного или руны
-                quantity: 5
-            * }
-            * ]
-        * }
-        *
-        * */
-        return ok(null);
+    public ResponseEntity addRecipe(@RequestBody AddProducableItemRequest addRecipeRequest) {
+        if(goodsRepository.addProducableItem(addRecipeRequest)) {
+            return ok(null);
+        } else {
+            return badRequest().build();
+        }
     }
 
     @PostMapping("/recipes/cook")
     public ResponseEntity CookPotionByRecipe(@RequestBody CookRequest cookRequest) {
-        //TODO увеличить количество приготовленного зелья
-        System.out.println(cookRequest.getRecipeId());
+        goodsRepository.produceRecipe(cookRequest.getRecipeId());
         return ok(null);
     }
 

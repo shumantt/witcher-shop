@@ -1,5 +1,6 @@
 package com.mpi.witcher.server.controllers;
 import com.mpi.witcher.server.models.users.NewUser;
+import com.mpi.witcher.server.models.users.UserRoles;
 import com.mpi.witcher.server.repositories.UsersRepository;
 
 import org.springframework.http.ResponseEntity;
@@ -21,20 +22,19 @@ public class UserController {
 
     @PostMapping("/user")
     public ResponseEntity AddUser(@RequestBody NewUser user) {
+        String role = user.getRole();
 
-        ArrayList<String> roles = new ArrayList<>();
-        roles.add("manager");
-        roles.add("client");
-        roles.add("employee");
+        try {
+            UserRoles userRole = UserRoles.valueOf(role);
+            boolean isOk = UsersRepository.createUser(user.getLogin(), user.getPassword(), userRole.ordinal());
 
-        if(!roles.contains(user.getRole().toLowerCase())){
+            if (isOk) {
+                return ok("ok");
+            } else {
+                return badRequest().body("Name already exist");
+            }
+        } catch (Exception e) {
             return badRequest().body("Wrong role");
-        }
-        boolean isOk = UsersRepository.createUser(user.getLogin(), user.getPassword(), user.getRole());
-        if(isOk){
-            return ok("ok");
-        } else {
-            return badRequest().body("Name already exist");
         }
     }
 }
