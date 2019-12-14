@@ -10,8 +10,8 @@
             </md-table-row>
         </md-table>
         <h1 class="md-title">Графики изменения показателей</h1>
-        <div class="charts">
-            <div v-for="(chart,index) in data.charts" v-bind:key="index">
+        <div class="charts md-layout">
+            <div v-for="(chart,index) in data.charts" v-bind:key="index" class="md-layout-item">
                 <div class="employees-chart report-chart">
                     <line-chart :chart-data="chart"></line-chart>
                 </div>

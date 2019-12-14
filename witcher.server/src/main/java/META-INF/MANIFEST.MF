@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Class-Path: com.mpi.witcher.server.Application
+Main-Class: com.mpi.witcher.server.Application
+

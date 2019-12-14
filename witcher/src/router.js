@@ -26,6 +26,11 @@ const routes = [
         component: Home,
         children: [
             {
+                name: 'default-receipts',
+                path: '/',
+                component: Receipts,
+            },
+            {
                 name: 'receipts',
                 path: '/receipts',
                 component: Receipts,
