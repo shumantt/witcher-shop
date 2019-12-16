@@ -2,20 +2,18 @@ package com.mpi.witcher.server.models.requests;
 
 import java.io.Serializable;
 
-public class ConsumptionRequest implements Serializable {
+public class UpdateProductAmountRequest implements Serializable {
     private long id;
     private String type;
     private int amount;
-    private boolean isPlus;
 
-    public ConsumptionRequest(long id, String type, int amount, boolean isPlus) {
+    public UpdateProductAmountRequest(long id, String type, int amount) {
         this.id = id;
         this.type = type;
         this.amount = amount;
-        this.isPlus = isPlus;
     }
 
-    public ConsumptionRequest() {}
+    public UpdateProductAmountRequest() {}
 
     public int getAmount() {
         return amount;
@@ -33,13 +31,6 @@ public class ConsumptionRequest implements Serializable {
         this.id = id;
     }
 
-    public boolean getIsPlus() {
-        return isPlus;
-    }
-
-    public void setIsPlus(boolean plus) {
-        isPlus = plus;
-    }
 
     public String getType() {
         return type;

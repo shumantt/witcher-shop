@@ -2,8 +2,7 @@ package com.mpi.witcher.server.controllers;
 
 import com.mpi.witcher.server.models.Recipe;
 import com.mpi.witcher.server.models.requests.AddProducableItemRequest;
-import com.mpi.witcher.server.models.requests.CookRequest;
-import com.mpi.witcher.server.models.requests.ConsumptionRequest;
+import com.mpi.witcher.server.models.requests.UpdateProductAmountRequest;
 import com.mpi.witcher.server.repositories.GoodsRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,8 +35,8 @@ public class ResourcesController {
     }
 
     @PostMapping("/recipes/cook")
-    public ResponseEntity CookPotionByRecipe(@RequestBody CookRequest cookRequest) {
-        goodsRepository.produceRecipe(cookRequest.getRecipeId());
+    public ResponseEntity CookPotionByRecipe(@RequestParam int recipeId) {
+        goodsRepository.produceRecipe(recipeId);
         return ok(null);
     }
 
@@ -46,8 +45,8 @@ public class ResourcesController {
         return ok(goodsRepository.getProductsByCategory("grass"));
     }
 
-    @PostMapping("/consumpt") //TODO сделать для всех ресурсов в зависимотси от типа request.type = animals, grass, runes
-    public ResponseEntity changeAmount(@RequestBody ConsumptionRequest request) {
+    @PostMapping("/update_amount")
+    public ResponseEntity changeAmount(@RequestBody UpdateProductAmountRequest request) {
         try {
             goodsRepository.updateGoodsQuantity(request.getId(), request.getAmount());
         } catch (SQLException e)
