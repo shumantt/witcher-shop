@@ -19,7 +19,7 @@ public class GoodsRepository {
     private static final String DecreaseComponentsCount = "UPDATE goods SET quantity = quantity - required_quantity FROM recipe_goods rg WHERE rg.recipe_id = ? AND rg.component_id = id;";
     private static final String FindRecipeComponents = "SELECT rg.required_quantity, g.quantity, g.id, g.name FROM goods g, recipe_goods rg WHERE rg.recipe_id = ? AND rg.component_id = g.id;";
     private static final String FindAllRecipes = "SELECT * FROM goods WHERE is_producable = true;";
-    private static final String FindGoodsByCategory = "SELECT g.*, c.name \"category\" FROM goods g, categories c WHERE g.category_id = c.id AND c.name = ?;";
+    private static final String FindGoodsByCategory = "SELECT g.*, c.name \"category\" FROM goods g, categories c, goods_categories gc WHERE gc.category_id = c.id AND gc.goods_id = g.id AND c.name = ?;";
     //private static final String FindResourceById = "SELECT g.*, c.name \"category\", h.* FROM goods g, categories c, history h WHERE g.id = ? AND c.id = g.category_id AND h.product_id = g.id;";
     private static final String FindResourceById = "SELECT * FROM goods WHERE id = ?;";
     private static final String FindProductCategories = "SELECT name FROM categories WHERE id = ?;";
@@ -181,6 +181,7 @@ public class GoodsRepository {
             statement.setString(1, category);
             ResultSet rs = statement.executeQuery();
 
+            rs.next();
             int id = rs.getInt("id");
             List<String> categories = getProductCategories(connection, id);
 
