@@ -17,8 +17,8 @@ export const RecipesService = {
         return axios.get("http://localhost:8080/api/resources/recipes");
     },
     
-    cookByRecipe(recipeId) {
-        return axios.post("http://localhost:8080/api/resources/recipes/cook", {recipeId});
+    cookByRecipe(request) {
+        return axios.post("http://localhost:8080/api/resources/recipes/cook", request);
     },
     
     addReceipt(request) {
