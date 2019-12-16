@@ -56,12 +56,12 @@
 </template> 
 
 <script>
-    const fakeData = [{
-        id: 12,
-        name: "Руна счастья",
-        category: "Редкие",
-        enchanted: false
-    }];
+    // const fakeData = [{
+    //     id: 12,
+    //     name: "Руна счастья",
+    //     category: "Редкие",
+    //     enchanted: false
+    // }];
     
     export default {
         name: "Runes",
@@ -92,7 +92,7 @@
                 this.$store.dispatch("enchantRune", this.selected.id)
                     .then(() => {
                         this.fetchRunes();
-                        fakeData[0].enchanted = true; //TODO удалить
+                       // fakeData[0].enchanted = true; //TODO удалить
                     })
                     .catch(console.log)
             },
@@ -100,8 +100,8 @@
             fetchRunes() {
                 this.$store.dispatch("fetchRunes")
                     .then((runes) => {
-                        this.runes = fakeData;
-                        this.filteredRunes = fakeData;
+                        this.runes = runes;//fakeData;
+                        this.filteredRunes = runes;// fakeData;
                     })
                     .catch(console.log);
             },

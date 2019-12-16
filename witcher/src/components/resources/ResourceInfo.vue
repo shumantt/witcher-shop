@@ -42,16 +42,16 @@
 </template>
 
 <script>
-    const fakeData = {
-      name: "Драконьи слезы",
-      description: "Слезы страшного дракона",
-      quantity: 5,
-      history: [{
-          name: 'Иванов Сергей Михайлович',
-          quantity: 5,
-          date: "01.10.2019"
-      }]  
-    };
+    // const fakeData = {
+    //   name: "Драконьи слезы",
+    //   description: "Слезы страшного дракона",
+    //   quantity: 5,
+    //   history: [{
+    //       name: 'Иванов Сергей Михайлович',
+    //       quantity: 5,
+    //       date: "01.10.2019"
+    //   }]  
+    // };
     export default {
         name: "ResourceInfo",
         data() {
@@ -70,7 +70,7 @@
             let id = this.$route.query.id;
             this.$store.dispatch("getResourceInfo", {type, id})
                 .then(info => {
-                    this.info = fakeData;
+                    this.info = info;//fakeData;
                 })
                 .catch(console.log);
         },

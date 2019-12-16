@@ -24,51 +24,51 @@
 <script>
 import LineChart from '@/charts/LineChart.js'
 
-const fakeData = {
-    reportData: [
-        {
-            name: 'Всего сотрудников',
-            value: 5
-        },
-        {
-            name: 'Всего видов зелий',
-            value: 5
-        },
-        {
-            name: 'Всего видов трав',
-            value: 5
-        },
-        {
-            name: 'Всего видов животных',
-            value: 14
-        },
-        {
-            name: 'Всего видов рун',
-            value: 3
-        }],
-    charts: [
-        {
-            labels: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май'],
-            datasets: [
-                {
-                    label: 'Количество сотрудников',
-                    backgroundColor: '#0f52bf',
-                    data: [1,2,3,3,5]
-                }]
-        },
-        {
-            labels: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май'],
-            datasets: [
-                {
-                    label: 'Количество видов рун',
-                    backgroundColor: '#95a014',
-                    data: [1,3,10,7,3]
-                }
-            ]
-        }
-    ],
+// const fakeData = {
+//     reportData: [
+//         {
+//             name: 'Всего сотрудников',
+//             value: 5
+//         },
+//         {
+//             name: 'Всего видов зелий',
+//             value: 5
+//         },
+//         {
+//             name: 'Всего видов трав',
+//             value: 5
+//         },
+//         {
+//             name: 'Всего видов животных',
+//             value: 14
+//         },
+//         {
+//             name: 'Всего видов рун',
+//             value: 3
+//         }],
+//     charts: [
+//         {
+//             labels: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май'],
+//             datasets: [
+//                 {
+//                     label: 'Количество сотрудников',
+//                     backgroundColor: '#0f52bf',
+//                     data: [1,2,3,3,5]
+//                 }]
+//         },
+//         {
+//             labels: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май'],
+//             datasets: [
+//                 {
+//                     label: 'Количество видов рун',
+//                     backgroundColor: '#95a014',
+//                     data: [1,3,10,7,3]
+//                 }
+//             ]
+//         }
+//     ],
     
-};
+// };
 
 export default {
     name: 'BaseReport',
@@ -102,7 +102,7 @@ export default {
         fetchData() {
                this.$store.dispatch("getBaseReport", {type: this.type, employeeId: this.employee, period: this.period})
                    .then((data) => {
-                       this.data = JSON.parse(JSON.stringify(fakeData));
+                       this.data = data;//JSON.parse(JSON.stringify(fakeData));
                        this.data.reportData.push({name: this.employee || this.type, value: this.period || this.type});
                    })
                    .catch(console.log)
