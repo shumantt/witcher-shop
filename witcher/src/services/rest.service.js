@@ -16,9 +16,15 @@ export const RecipesService = {
     getAll() {
         return axios.get("http://localhost:8080/api/resources/recipes");
     },
+<<<<<<< HEAD
 
     cookByRecipe(recipeId) {
         return axios.post("http://localhost:8080/api/resources/recipes/cook", {recipeId});
+=======
+
+    cookByRecipe(request) {
+        return axios.post("http://localhost:8080/api/resources/recipes/cook", request);
+>>>>>>> 3049fc6cc7f14d0c232e33f510c5428330a4618e
     },
 
     addReceipt(request) {
@@ -58,8 +64,8 @@ export const RunesService = {
         return axios.get("http://localhost:8080/api/resources/runes");
     },
 
-    enchantRune(runeId) {
-        return axios.post("http://localhost:8080/api/resources/runes/enchant", {runeId});
+    enchantRune(runeId, userLogin) {
+        return axios.post("http://localhost:8080/api/resources/runes/enchant", {recipeId: runeId, userLogin: userLogin});
     }
 }
 

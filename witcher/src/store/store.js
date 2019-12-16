@@ -89,7 +89,10 @@ const actions = {
 
     consumpt(context, consumptionRequest) {
         return new Promise((resolve, reject) => {
-            ResourceService.consumpt(consumptionRequest)
+            ResourceService.consumpt({
+                ...consumptionRequest,
+                userLogin: context.state.user.login
+            })
                 .then((response) => resolve(response.data))
                 .catch(error => reject(error));
         });
@@ -121,7 +124,10 @@ const actions = {
 
     cookPotion(context, recipeId) {
         return new Promise((resolve, reject) => {
-           RecipesService.cookByRecipe(recipeId)
+           RecipesService.cookByRecipe({
+               recipeId: recipeId,
+               userLogin: context.state.user.login
+           })
                .then((response) => resolve(response.data))
                .catch(error => reject(error))
         });
@@ -145,7 +151,7 @@ const actions = {
 
     enchantRune(context, runeId) {
         return new Promise((resolve, reject) => {
-            RunesService.enchantRune(runeId)
+            RunesService.enchantRune(runeId,context.state.user.login)
                 .then(() => resolve())
                 .catch(error => reject(error))
         });
