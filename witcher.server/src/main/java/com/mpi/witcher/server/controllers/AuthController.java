@@ -26,6 +26,8 @@ public class AuthController {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    private UsersRepository usersRepository = new UsersRepository();
+
     public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
@@ -37,7 +39,7 @@ public class AuthController {
         try {
             String login = data.getLogin();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login, data.getPassword()));
-            User user = UsersRepository
+            User user = usersRepository
                     .findByUserName(login)
                     .orElseThrow(() -> new UsernameNotFoundException("Login " + login + "not found"));
             String token = jwtTokenProvider.createToken(login, user.getRoles());

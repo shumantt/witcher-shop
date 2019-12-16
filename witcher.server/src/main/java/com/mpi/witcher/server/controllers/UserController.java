@@ -15,9 +15,11 @@ import static org.springframework.http.ResponseEntity.ok;
 @RequestMapping("/api")
 public class UserController {
 
+    private UsersRepository usersRepository = new UsersRepository();
+
     @GetMapping("/users")
     public ResponseEntity GetAllUsers() {
-        return ok(UsersRepository.Users);
+        return ok(usersRepository.getAll());
     }
 
     @PostMapping("/user")
@@ -26,7 +28,7 @@ public class UserController {
 
         try {
             UserRoles userRole = UserRoles.valueOf(role);
-            boolean isOk = UsersRepository.createUser(user.getLogin(), user.getPassword(), userRole.ordinal());
+            boolean isOk = usersRepository.createUser(user.getLogin(), user.getPassword(), userRole.ordinal());
 
             if (isOk) {
                 return ok("ok");

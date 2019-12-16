@@ -6,16 +6,36 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class UsersRepository {
     private static final String CreateUserSql = "INSERT INTO users (login, name, role_id, password) VALUES (?, ?, ?, ?);";
     private static final String FindUserSql = "SELECT users.*, roles.name \"role\" FROM users, roles WHERE users.role_id = roles.id AND users.name = ?;";
+    private static final String GetAllUsers = "SELECT users.*, roles.name \"role\" FROM users, roles WHERE users.role_id = roles.id;";
 
-    private static PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    public List<User> getAll(){
+        try {
+            Connection connection = Database.connect();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(GetAllUsers);
+            List<User> users  = new ArrayList<>();
+            while (rs.next()){
+                users.add(new User(
+                        rs.getString("login"),
+                        rs.getString("name"),
+                        rs.getString("picture_url"),
+                        rs.getString("role"),
+                        rs.getString("password")
+                ));
+            }
+            return users;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
 
-
-    public static boolean createUser(String login, String password, int role) {
+    public boolean createUser(String login, String password, int role) {
         try {
             Connection connection = Database.connect();
             PreparedStatement statement = connection.prepareStatement(CreateUserSql);
@@ -30,7 +50,7 @@ public class UsersRepository {
         return true;
     }
 
-    public static Optional<User> findByUserName(String name) {
+    public Optional<User> findByUserName(String name) {
         try {
             Connection connection = Database.connect();
             PreparedStatement statement = connection.prepareStatement(FindUserSql);
