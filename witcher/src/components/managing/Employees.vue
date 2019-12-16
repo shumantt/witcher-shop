@@ -8,8 +8,8 @@
                 <md-table-cell md-label="Имя">{{ item.name }}</md-table-cell>
                 <md-table-cell md-label="Должность">{{ item.role }}</md-table-cell>
                 <md-table-cell md-label="">
-                    <md-button v-if="item.role == 'EMPLOYEE'" class="md-raised" @click="consumptionReport(item.login)">Загруженность</md-button>
-                    <md-button v-if="item.role == 'EMPLOYEE'" class="md-raised" @click="kpiReport(item.login)">KPI</md-button>
+                    <md-button v-if="item.role == 'employee'" class="md-raised" @click="consumptionReport(item.login)">Загруженность</md-button>
+                    <md-button v-if="item.role == 'employee'" class="md-raised" @click="kpiReport(item.login)">KPI</md-button>
                 </md-table-cell>
             </md-table-row>
         </md-table>
@@ -21,8 +21,8 @@
             <md-field >
                 <label for="role">Должность</label>
                 <md-select v-model="role" name="role" id="role">
-                    <md-option value="MANAGER">Менеджер</md-option>
-                    <md-option value="EMPLOYEE">Сотрудник</md-option>
+                    <md-option value="manager">Менеджер</md-option>
+                    <md-option value="employee">Сотрудник</md-option>
                 </md-select>
             </md-field>
             <md-button class="md-raised" @click="addUser">Добавить</md-button>

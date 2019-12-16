@@ -19,10 +19,10 @@ const state = {
 
 const getters = {
     isLoggedIn: state => !!state.user,
-    isEmployee: state => state.user.role == "EMPLOYEE" || state.user.role == "MANAGER",
-    isManager: state => state.user.role == "MANAGER",
-    isWorker: state => state.user.role == "EMPLOYEE",
-    isClient: state => state.user.role == "CLIENT"
+    isEmployee: state => state.user.role == "employee" || state.user.role == "manager",
+    isManager: state => state.user.role == "manager",
+    isWorker: state => state.user.role == "employee",
+    isClient: state => state.user.role == "client"
 }
 
 const mutations = {
@@ -102,7 +102,7 @@ const actions = {
                 .catch(error => reject(error));
         });
     },
-    
+
     fetchClientOrders(context) {
         return new Promise((resolve, reject) => {
             OrdersService.getClientOrders(context.state.user.login)
@@ -118,7 +118,7 @@ const actions = {
                 .catch(error => reject(error));
         });
     },
-    
+
     cookPotion(context, recipeId) {
         return new Promise((resolve, reject) => {
            RecipesService.cookByRecipe(recipeId)
@@ -126,7 +126,7 @@ const actions = {
                .catch(error => reject(error))
         });
     },
-    
+
     updateOrderStatus(context, updateRequest) {
         return new Promise((resolve, reject) => {
             OrdersService.updateStatus(updateRequest)
@@ -142,7 +142,7 @@ const actions = {
                 .catch(error => reject(error))
         });
     },
-    
+
     enchantRune(context, runeId) {
         return new Promise((resolve, reject) => {
             RunesService.enchantRune(runeId)
@@ -158,7 +158,7 @@ const actions = {
                 .catch(error => reject(error))
         });
     },
-    
+
     getResourceInfo(context, {type, id}) {
         return new Promise((resolve, reject) => {
             ResourceService.getResourceInfo(type, id)
@@ -166,7 +166,7 @@ const actions = {
                 .catch(error => reject(error))
         });
     },
-    
+
     addReceipt(context, request) {
         return new Promise((resolve, reject) => {
             RecipesService.addReceipt(request)
@@ -174,11 +174,11 @@ const actions = {
                 .catch(error => reject(error))
         });
     },
-    
+
     getBaseReport(context, {type, employeeId, period}) {
         return new Promise((resolve, reject) => {
             switch (type) {
-                case "base": 
+                case "base":
                     return ReportService.getBaseReport()
                         .then((response) => resolve(response.data))
                         .catch(error => reject(error));

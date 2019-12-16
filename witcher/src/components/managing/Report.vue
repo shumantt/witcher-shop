@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import BaseReport from './BaseReport'; 
+import BaseReport from './BaseReport';
 export default {
     name: 'Report',
     components: {
@@ -81,16 +81,16 @@ export default {
             selectedPeriod: 1
         }
     },
-    
+
     mounted() {
         this.$store.dispatch("fetchUsers")
             .then((users) => {
-                this.employees = users.filter(u => u.role == 'EMPLOYEE');
-                this.employees.push({login: "asdf", name: "masfas", role: 'EMPLOYEE'})
+                this.employees = users.filter(u => u.role == 'employee');
+                this.employees.push({login: "asdf", name: "masfas", role: 'employee'})
             })
-            .catch(console.log);  
+            .catch(console.log);
     },
-    
+
     computed: {
         showBaseWorkloadReport() {
             return this.selectedWorkloadEmployeeId == "-1";
@@ -100,7 +100,7 @@ export default {
             return this.selectedKpiEmployeeId != "-1";
         }
     },
-    
+
     methods: {
         workloadEmployeeIdSelected() {
             if(this.prevWorkloadEmployeeId == this.workloadEmployeeId)

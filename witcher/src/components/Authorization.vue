@@ -51,17 +51,19 @@ export default {
 
         processAuth(user) {
             console.log(user);
+            console.log("user");
             switch(user.role) {
-                case "EMPLOYEE":
+                case "employee":
                     this.$router.push("/receipts");
                     break;
-                case "MANAGER":
+                case "manager":
                     this.$router.push("/report");
                     break;
-                case "CLIENT":
+                case "client":
                     this.$router.push("/client-orders");
                     break;
             }
+            console.log(user.role);
         }
     }
 }
