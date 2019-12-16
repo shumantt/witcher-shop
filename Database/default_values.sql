@@ -2,9 +2,9 @@ INSERT INTO roles (name) VALUES ('client'), ('employee'), ('manager');
 
 INSERT INTO users (login, name, role_id, password)
 VALUES
-    ('witcher', 'Геральт из Ривии', 0, '{bcrypt}$2a$10$CsW6AeiIWd6VlM35GPFaRuxmy1v539zu.7VBoSspDD.9FO5CICSZ.'),
-    ('alchemist', 'Николас Фламель', 1, '{bcrypt}$2a$10$CsW6AeiIWd6VlM35GPFaRuxmy1v539zu.7VBoSspDD.9FO5CICSZ.'),
-    ('manager', 'Лютик', 2, '{bcrypt}$2a$10$CsW6AeiIWd6VlM35GPFaRuxmy1v539zu.7VBoSspDD.9FO5CICSZ.');
+    ('witcher', 'Геральт из Ривии', 1, '{bcrypt}$2a$10$CsW6AeiIWd6VlM35GPFaRuxmy1v539zu.7VBoSspDD.9FO5CICSZ.'),
+    ('alchemist', 'Николас Фламель', 2, '{bcrypt}$2a$10$CsW6AeiIWd6VlM35GPFaRuxmy1v539zu.7VBoSspDD.9FO5CICSZ.'),
+    ('manager', 'Лютик', 3, '{bcrypt}$2a$10$CsW6AeiIWd6VlM35GPFaRuxmy1v539zu.7VBoSspDD.9FO5CICSZ.');
 
 INSERT INTO categories (name) VALUES
     ('Руна'), ('Растение'), ('Зелье'),
