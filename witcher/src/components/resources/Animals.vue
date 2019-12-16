@@ -43,19 +43,19 @@
 </template>
 
 <script>
-    const fakeData = 
-            [{
-                id: 2,
-                name: "Noga Zver",
-                description: "Ogramnaya lapa s kogtyami",
-                quantity: 12
-            },
-            {
-                id: 3,
-                name: "2Noga Zver",
-                description: "2Ogramnaya lapa2 s kogtyami",
-                quantity: 5
-            }];
+    // const fakeData = 
+    //         [{
+    //             id: 2,
+    //             name: "Noga Zver",
+    //             description: "Ogramnaya lapa s kogtyami",
+    //             quantity: 12
+    //         },
+    //         {
+    //             id: 3,
+    //             name: "2Noga Zver",
+    //             description: "2Ogramnaya lapa2 s kogtyami",
+    //             quantity: 5
+    //         }];
     
     export default {
         name: "Animals",
@@ -70,8 +70,8 @@
         mounted() {
             this.$store.dispatch("fetchAnimals")
                 .then((animals) => {
-                    this.animals = fakeData;
-                    this.filteredAnimals = fakeData;
+                    this.animals = animals;//fakeData;
+                    this.filteredAnimals = animals;//fakeData;
                 })
                 .catch((error) => console.log(error));
         },

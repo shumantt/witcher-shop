@@ -46,26 +46,26 @@
 </template>
 
 <script>
-    const fakeAnimals =
-        [{
-            id: 2,
-            name: "Noga Zver",
-            description: "Ogramnaya lapa s kogtyami",
-            quantity: 12
-        },
-            {
-                id: 3,
-                name: "2Noga Zver",
-                description: "2Ogramnaya lapa2 s kogtyami",
-                quantity: 5
-            }];
+    // const fakeAnimals =
+    //     [{
+    //         id: 2,
+    //         name: "Noga Zver",
+    //         description: "Ogramnaya lapa s kogtyami",
+    //         quantity: 12
+    //     },
+    //         {
+    //             id: 3,
+    //             name: "2Noga Zver",
+    //             description: "2Ogramnaya lapa2 s kogtyami",
+    //             quantity: 5
+    //         }];
 
-    const fakeRunes = [{
-        id: 12,
-        name: "Руна счастья",
-        category: "Редкие",
-        enchanted: false
-    }];
+    // const fakeRunes = [{
+    //     id: 12,
+    //     name: "Руна счастья",
+    //     category: "Редкие",
+    //     enchanted: false
+    // }];
     export default {
         name: "ResourceSelection",
         data() {
@@ -92,19 +92,19 @@
         mounted() {
             this.$store.dispatch("fetchAnimals")
                 .then((animals) => {
-                    this.animals = fakeAnimals;
+                    this.animals = animals;//fakeAnimals;
                 })
                 .catch((error) => console.log(error));
 
             this.$store.dispatch("fetchGrass")
                 .then((grass) => {
-                    this.grass = grass;
+                    this.grass = grass || [];
                 })
                 .catch((error) => console.log(error));
 
             this.$store.dispatch("fetchRunes")
                 .then((runes) => {
-                    this.runes = fakeRunes;
+                    this.runes = runes;//fakeRunes;
                 })
                 .catch(console.log);
         },
