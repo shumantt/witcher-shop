@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public class UsersRepository {
     private static final String CreateUserSql = "INSERT INTO users (login, name, role_id, password) VALUES (?, ?, ?, ?);";
-    private static final String FindUserSql = "SELECT users.*, roles.name \"role\" FROM users, roles WHERE users.role_id = roles.id AND users.name = ?;";
+    private static final String FindUserSql = "SELECT users.*, roles.name \"role\" FROM users, roles WHERE users.role_id = roles.id AND users.login = ?;";
     private static final String GetAllUsers = "SELECT users.*, roles.name \"role\" FROM users, roles WHERE users.role_id = roles.id;";
 
     public List<User> getAll(){
