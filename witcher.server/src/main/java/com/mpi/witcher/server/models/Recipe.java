@@ -1,51 +1,82 @@
 package com.mpi.witcher.server.models;
 
-public class Recipe {
-    private long id;
-    private String name;
-    private String category;
-    private String components;
-    private boolean enoughResources;
-    private int potionQuantity = 5; // TODO инфа о количества зелий по рецепту на складе (нужна для фронта)
+import java.util.List;
 
-    //TODO добавить инфу о кличестве зелий на складе, приготовленных по этому рецепту
-    public Recipe(long id, String name, String category, String components, boolean enoughResources) {
-        this.id = id;
-        this.name = name;
-        this.category = category;
+public class Recipe extends Product {
+
+    private String instruction;
+    private List<Component> components;
+    private boolean enoughResources;
+
+    public Recipe(int id, String name, String description, List<String> categories, int quantity, String instruction, List<Component> components, boolean enoughResources) {
+        super(id, name, description, categories, quantity);
+        this.instruction = instruction;
         this.components = components;
         this.enoughResources = enoughResources;
     }
 
-    public String getName() {
-        return name;
+    public String getInstruction() {
+        return instruction;
     }
 
-    public String getCategory() {
-        return category;
+    public void setInstruction(String instruction) {
+        this.instruction = instruction;
     }
 
     public String getComponents() {
-        return components;
+        StringBuilder formattedComponents = new StringBuilder();
+        for(Recipe.Component c : components) {
+            formattedComponents.append(c.getName()).append(" (x").append(c.getRequiredQuantity()).append("), ");
+        }
+        formattedComponents.delete(formattedComponents.length() - 2, formattedComponents.length());
+        return formattedComponents.toString();
+    }
+
+    public void setComponents(List<Component> components) {
+        this.components = components;
     }
 
     public boolean isEnoughResources() {
         return enoughResources;
     }
 
-    public long getId() {
-        return id;
+    public void setEnoughResources(boolean enoughResources) {
+        this.enoughResources = enoughResources;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    public static class Component {
+        private int productId;
+        private int requiredQuantity;
+        private String name;
 
-    public int getPotionQuantity() {
-        return potionQuantity;
-    }
+        public Component(int productId, int requiredQuantity, String name) {
+            this.productId = productId;
+            this.requiredQuantity = requiredQuantity;
+            this.name = name;
+        }
 
-    public void setPotionQuantity(int potionQuantity) {
-        this.potionQuantity = potionQuantity;
+        public int getProductId() {
+            return productId;
+        }
+
+        public void setProductId(int productId) {
+            this.productId = productId;
+        }
+
+        public int getRequiredQuantity() {
+            return requiredQuantity;
+        }
+
+        public void setRequiredQuantity(int requiredQuantity) {
+            this.requiredQuantity = requiredQuantity;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
     }
 }

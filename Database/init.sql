@@ -47,3 +47,11 @@ CREATE TABLE orders (
     phone VARCHAR(20),
     status integer NOT NULL
 );
+
+CREATE TABLE history (
+    id serial PRIMARY KEY,
+    user_id integer NOT NULL REFERENCES users (id),
+    product_id integer NOT NULL REFERENCES goods (id),
+    change integer NOT NULL,
+    date DATE NOT NULL
+);

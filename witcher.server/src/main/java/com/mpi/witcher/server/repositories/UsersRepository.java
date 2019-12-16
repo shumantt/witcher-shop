@@ -13,13 +13,7 @@ public class UsersRepository {
     private static final String FindUserSql = "SELECT users.*, roles.name \"role\" FROM users, roles WHERE users.role_id = roles.id AND users.name = ?;";
 
     private static PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    public static ArrayList<User> Users = new ArrayList<User>() {
-        {
-            add(new User("client", "Geralt of Rivia","/img/witcher-face.jpg","CLIENT", passwordEncoder.encode("123")));
-            add(new User("employee", "Алхимик","/img/alchim.jpg","EMPLOYEE", passwordEncoder.encode("123")));
-            add(new User("manager", "Руководитель","/img/boss.jpg","MANAGER", passwordEncoder.encode("123")));
-        }
-    };
+
 
     public static boolean createUser(String login, String password, int role) {
         try {

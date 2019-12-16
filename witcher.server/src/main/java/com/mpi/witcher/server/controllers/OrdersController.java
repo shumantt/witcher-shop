@@ -6,7 +6,6 @@ import com.mpi.witcher.server.models.requests.AddOrderRequest;
 import com.mpi.witcher.server.models.requests.UpdateOrderStatusRequest;
 import com.mpi.witcher.server.models.responses.OrderResponse;
 import com.mpi.witcher.server.repositories.OrdersRepository;
-import com.mpi.witcher.server.repositories.RecipesRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

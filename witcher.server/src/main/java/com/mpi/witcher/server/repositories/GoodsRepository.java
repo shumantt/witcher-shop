@@ -1,12 +1,13 @@
 package com.mpi.witcher.server.repositories;
 
+import com.mpi.witcher.server.models.Product;
+import com.mpi.witcher.server.models.Recipe;
 import com.mpi.witcher.server.models.requests.AddItemRequest;
 import com.mpi.witcher.server.models.requests.AddProducableItemRequest;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GoodsRepository {
     private static final String AddProducableItemSql = "INSERT INTO goods (name, description, instruction, is_producable) VALUES (?, ?, ?, true);";
@@ -14,10 +15,14 @@ public class GoodsRepository {
     private static final String AddComponentItemSql = "INSERT INTO goods (name, description) VALUES (?, ?);";
     private static final String UpdateGoodsQuantity = "UPDATE goods SET quantity = ? WHERE id = ?;";
     private static final String IncrementGoodsQuantity = "UPDATE goods SET quantity = quantity + 1 WHERE id = ?;";
-    private static final String DecreaseComponentsCount = "UPDATE goods SET quantity = quantity - required_quantity FROM recipe_goods WHERE recipe_goods.recipe_id = ? AND recipe_goods.component_id = id;";
-    private static final String FindRecipeComponents = "SELECT recipe_goods.required_quantity, goods.quantity, goods.id FROM goods, recipe_goods WHERE recipe_goods.recipe_id = ? AND recipe_goods.component_id = goods.id;";
-    private static final String FindAllRecipes = "";
-    
+    private static final String DecreaseComponentsCount = "UPDATE goods SET quantity = quantity - required_quantity FROM recipe_goods rg WHERE rg.recipe_id = ? AND rg.component_id = id;";
+    private static final String FindRecipeComponents = "SELECT rg.required_quantity, g.quantity, g.id, g.name FROM goods g, recipe_goods rg WHERE rg.recipe_id = ? AND rg.component_id = g.id;";
+    private static final String FindAllRecipes = "SELECT * FROM goods WHERE is_producable = true;";
+    private static final String FindGoodsByCategory = "SELECT g.*, c.name \"category\" FROM goods g, categories c WHERE g.category_id = c.id AND c.name = ?;";
+    //private static final String FindResourceById = "SELECT g.*, c.name \"category\", h.* FROM goods g, categories c, history h WHERE g.id = ? AND c.id = g.category_id AND h.product_id = g.id;";
+    private static final String FindResourceById = "SELECT * FROM goods WHERE id = ?;";
+    private static final String FindProductCategories = "SELECT name FROM categories WHERE id = ?;";
+
     public boolean addProducableItem(AddProducableItemRequest request) {
         try {
             Connection connection = Database.connect();
@@ -31,11 +36,11 @@ public class GoodsRepository {
             resultSet.next();
             int id = resultSet.getInt("id");
 
-            for(AddProducableItemRequest.Component component : request.getIngredients()){
+            for(Recipe.Component component : request.getIngredients()){
                 statement = connection.prepareStatement(AddProducableItemComponentsSql);
                 statement.setInt(1, id);
-                statement.setInt(2, component.getId());
-                statement.setInt(3, component.getQuantity());
+                statement.setInt(2, component.getProductId());
+                statement.setInt(3, component.getRequiredQuantity());
                 statement.addBatch();
             }
             statement.executeBatch();
@@ -96,12 +101,111 @@ public class GoodsRepository {
         }
     }
 
-    private void updateGoodsQuantity(int id, int quantity) throws SQLException {
+    public List<Recipe> getRecipes() {
+        try {
+            Connection connection = Database.connect();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(FindAllRecipes);
+
+            List<Recipe> recipes = new ArrayList<>();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String desc = resultSet.getString("description");
+                String instruction = resultSet.getString("instruction");
+                int quantity = resultSet.getInt("quantity");
+
+                List<Recipe.Component> components = new ArrayList<>();
+                PreparedStatement preparedStatement = connection.prepareStatement(FindRecipeComponents);
+                preparedStatement.setInt(1, id);
+                ResultSet itemsResultSet = preparedStatement.executeQuery();
+                while (itemsResultSet.next()) {
+                    int required = itemsResultSet.getInt("required_quantity");
+                    String product_name = itemsResultSet.getString("name");
+                    int product_id = itemsResultSet.getInt("id");
+                    components.add(new Recipe.Component(product_id, required, product_name));
+                }
+
+                List<String> categories = new ArrayList<>();
+                preparedStatement = connection.prepareStatement(FindProductCategories);
+                preparedStatement.setInt(1, id);
+                itemsResultSet = preparedStatement.executeQuery();
+                while (itemsResultSet.next()) {
+                    categories.add(itemsResultSet.getString(1));
+                }
+
+                recipes.add(new Recipe(id, name, desc, categories, quantity, instruction, components, recipeHasEnoughComponents(id)));
+            }
+
+            return recipes;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public List<Product> getProductsByCategory(String category) {
+        try {
+            Connection connection = Database.connect();
+            PreparedStatement statement = connection.prepareStatement(FindGoodsByCategory);
+            statement.setString(1, category);
+            ResultSet rs = statement.executeQuery();
+
+            int id = rs.getInt("id");
+            List<String> categories = getProductCategories(connection, id);
+
+            List<Product> products = new ArrayList<>();
+            while (rs.next()) {
+                products.add(new Product(
+                        id,
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        categories,
+                        rs.getInt("quantity")));
+            }
+            return products;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public void updateGoodsQuantity(long id, int quantity) throws SQLException {
         Connection connection = Database.connect();
         PreparedStatement statement = connection.prepareStatement(UpdateGoodsQuantity);
         statement.setInt(1, quantity);
-        statement.setInt(2, id);
+        statement.setInt(2, (int)id);
         statement.execute();
+    }
+
+    public Product getById(int id) {
+        try {
+            Connection connection = Database.connect();
+            PreparedStatement statement = connection.prepareStatement(FindResourceById);
+            statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
+
+            List<String> categories = getProductCategories(connection, id);
+
+            return new Product(
+                    id,
+                    rs.getString("name"),
+                    rs.getString("description"),
+                    categories,
+                    rs.getInt("quantity")
+            );
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    private List<String> getProductCategories(Connection connection, int productId) throws SQLException {
+        List<String> categories = new ArrayList<>();
+        PreparedStatement statement = connection.prepareStatement(FindProductCategories);
+        statement.setInt(1, productId);
+        ResultSet crs = statement.executeQuery();
+        while (crs.next()) {
+            categories.add(crs.getString(1));
+        }
+        return categories;
     }
 
 }
