@@ -113,7 +113,7 @@
                     type: "",
                     name: "",
                     id: -1,
-                    quantity: 0
+                    quantity: 1
                 }
             }
         },
@@ -139,7 +139,7 @@
                     type: this.ingredientForm.type,
                     name: this.ingredientForm.name,
                     id: this.ingredientForm.id,
-                    quantity: this.ingredientForm.quantity
+                    requiredQuantity: parseInt(this.ingredientForm.quantity)
                 });
 
                 this.addingIngredient = false;

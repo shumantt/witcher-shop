@@ -58,8 +58,8 @@ export const RunesService = {
         return axios.get("http://localhost:8080/api/resources/runes");
     },
     
-    enchantRune(runeId) {
-        return axios.post("http://localhost:8080/api/resources/runes/enchant", {runeId});
+    enchantRune(runeId, userLogin) {
+        return axios.post("http://localhost:8080/api/resources/runes/enchant", {recipeId: runeId, userLogin: userLogin});
     }
 }
 

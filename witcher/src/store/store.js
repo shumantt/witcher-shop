@@ -145,7 +145,7 @@ const actions = {
 
     enchantRune(context, runeId) {
         return new Promise((resolve, reject) => {
-            RunesService.enchantRune(runeId)
+            RunesService.enchantRune(runeId,context.state.user.login)
                 .then(() => resolve())
                 .catch(error => reject(error))
         });
