@@ -3,25 +3,25 @@ package com.mpi.witcher.server.models.requests;
 import java.io.Serializable;
 
 public class AddOrderRequest implements Serializable {
-    private long potionId;
+    private int potionId;
     private int quantity;
     private String clientLogin;
     private String phone;
 
 
     public AddOrderRequest() {}
-    public AddOrderRequest(long potionId, int quantity, String clientLogin, String phone) {
+    public AddOrderRequest(int potionId, int quantity, String clientLogin, String phone) {
         this.potionId = potionId;
         this.quantity = quantity;
         this.clientLogin = clientLogin;
         this.phone = phone;
     }
 
-    public long getPotionId() {
+    public int getPotionId() {
         return potionId;
     }
 
-    public void setPotionId(long potionId) {
+    public void setPotionId(int potionId) {
         this.potionId = potionId;
     }
 

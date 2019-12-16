@@ -31,8 +31,7 @@ CREATE TABLE roles (
 );
 
 CREATE TABLE users (
-    id serial PRIMARY KEY,
-    login VARCHAR(30) UNIQUE NOT NULL,
+    login VARCHAR(30) PRIMARY KEY,
     name VARCHAR(30) UNIQUE NOT NULL,
     picture_url TEXT,
     role_id integer NOT NULL,
@@ -41,7 +40,7 @@ CREATE TABLE users (
 
 CREATE TABLE orders (
     id serial PRIMARY KEY,
-    client_id integer NOT NULL REFERENCES users (id),
+    client_id VARCHAR(30) NOT NULL REFERENCES users (login),
     goods_id integer NOT NULL REFERENCES goods (id),
     quantity integer NOT NULL,
     phone VARCHAR(20),
@@ -50,7 +49,7 @@ CREATE TABLE orders (
 
 CREATE TABLE history (
     id serial PRIMARY KEY,
-    user_id integer NOT NULL REFERENCES users (id),
+    user_id VARCHAR(30) NOT NULL REFERENCES users (login),
     product_id integer NOT NULL REFERENCES goods (id),
     change integer NOT NULL,
     date DATE NOT NULL

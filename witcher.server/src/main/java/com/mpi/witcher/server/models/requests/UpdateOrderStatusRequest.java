@@ -1,18 +1,18 @@
 package com.mpi.witcher.server.models.requests;
 
 public class UpdateOrderStatusRequest {
-    private long orderId;
+    private int orderId;
     private int newStatus;
 
     public UpdateOrderStatusRequest() {
     }
 
 
-    public long getOrderId() {
+    public int getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(long orderId) {
+    public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
 
