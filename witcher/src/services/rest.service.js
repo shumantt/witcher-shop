@@ -16,11 +16,11 @@ export const RecipesService = {
     getAll() {
         return axios.get("http://localhost:8080/api/resources/recipes");
     },
-    
+
     cookByRecipe(recipeId) {
         return axios.post("http://localhost:8080/api/resources/recipes/cook", {recipeId});
     },
-    
+
     addReceipt(request) {
         return axios.post("http://localhost:8080/api/resources/recipes", request);
     }
@@ -43,11 +43,11 @@ export const OrdersService = {
     addOrder(order) {
         return axios.post("http://localhost:8080/api/orders", order);
     },
-    
+
     getClientOrders(clientLogin) {
         return axios.get("http://localhost:8080/api/orders?clientLogin=" + clientLogin);
     },
-    
+
     updateStatus(updateRequest) {
         return axios.post("http://localhost:8080/api/orders/status", updateRequest);
     }
@@ -57,7 +57,7 @@ export const RunesService = {
     getAll() {
         return axios.get("http://localhost:8080/api/resources/runes");
     },
-    
+
     enchantRune(runeId) {
         return axios.post("http://localhost:8080/api/resources/runes/enchant", {runeId});
     }
@@ -75,7 +75,7 @@ export const ResourceService = {
     },
 
     consumpt(consumptionInfo) {
-        return axios.post("http://localhost:8080/api/resources/consumpt", consumptionInfo);
+        return axios.post("http://localhost:8080/api/resources/update_amount", consumptionInfo);
     }
 }
 
@@ -91,7 +91,7 @@ export const ReportService = {
     getWorkloadReport() {
         return axios.get("http://localhost:8080/api/report/workload");
     },
-    
+
     getEmployeeWorkloadReport(employeeId) {
         return axios.get("http://localhost:8080/api/report/workload/employee?login="+employeeId);
     },

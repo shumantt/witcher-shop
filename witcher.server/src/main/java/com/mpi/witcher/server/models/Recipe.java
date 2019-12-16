@@ -24,6 +24,8 @@ public class Recipe extends Product {
     }
 
     public String getComponents() {
+        if(components == null || components.size() == 0)
+            return "";
         StringBuilder formattedComponents = new StringBuilder();
         for(Recipe.Component c : components) {
             formattedComponents.append(c.getName()).append(" (x").append(c.getRequiredQuantity()).append("), ");
@@ -45,22 +47,22 @@ public class Recipe extends Product {
     }
 
     public static class Component {
-        private int productId;
+        private int id;
         private int requiredQuantity;
         private String name;
 
-        public Component(int productId, int requiredQuantity, String name) {
-            this.productId = productId;
+        public Component(int id, int requiredQuantity, String name) {
+            this.id = id;
             this.requiredQuantity = requiredQuantity;
             this.name = name;
         }
 
-        public int getProductId() {
-            return productId;
+        public int getId() {
+            return id;
         }
 
-        public void setProductId(int productId) {
-            this.productId = productId;
+        public void setId(int id) {
+            this.id = id;
         }
 
         public int getRequiredQuantity() {

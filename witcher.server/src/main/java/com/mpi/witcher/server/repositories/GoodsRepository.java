@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GoodsRepository {
-    private static final String AddProducableItemSql = "INSERT INTO goods (name, description, instruction, is_producable) VALUES (?, ?, ?, true);";
+    private static final String AddProducableItemSql = "INSERT INTO goods (name, description, instruction, is_producable) VALUES (?, ?, ?, true) RETURNING id;";
     private static final String AddProducableItemComponentsSql = "INSERT INTO recipe_goods (recipe_id, component_id, required_quantity) VALUES (?, ?, ?, true) RETURNING id;";
     private static final String AddComponentItemSql = "INSERT INTO goods (name, description) VALUES (?, ?);";
     private static final String UpdateGoodsQuantity = "UPDATE goods SET quantity = ? WHERE id = ?;";
@@ -43,7 +43,7 @@ public class GoodsRepository {
             for(Recipe.Component component : request.getIngredients()){
                 statement = connection.prepareStatement(AddProducableItemComponentsSql);
                 statement.setInt(1, id);
-                statement.setInt(2, component.getProductId());
+                statement.setInt(2, component.getId());
                 statement.setInt(3, component.getRequiredQuantity());
                 statement.addBatch();
             }
@@ -181,26 +181,26 @@ public class GoodsRepository {
             statement.setString(1, category);
             ResultSet rs = statement.executeQuery();
 
-            rs.next();
-            int id = rs.getInt("id");
-            List<String> categories = getProductCategories(connection, id);
-
-            List<HistoryEvent> history = new ArrayList<>();
-            statement = connection.prepareStatement(GetHistoryByProductId);
-            statement.setInt(1, id);
-            ResultSet hrs = statement.executeQuery();
-            while (hrs.next()){
-                history.add(new HistoryEvent(
-                        rs.getInt("id"),
-                        rs.getString("user_id"),
-                        rs.getInt("product_id"),
-                        rs.getInt("change"),
-                        rs.getDate("date")
-                ));
-            }
-
             List<Product> products = new ArrayList<>();
             while (rs.next()) {
+
+                int id = rs.getInt("id");
+                List<String> categories = getProductCategories(connection, id);
+
+                List<HistoryEvent> history = new ArrayList<>();
+                statement = connection.prepareStatement(GetHistoryByProductId);
+                statement.setInt(1, id);
+                ResultSet hrs = statement.executeQuery();
+                while (hrs.next()){
+                    history.add(new HistoryEvent(
+                            rs.getInt("id"),
+                            rs.getString("user_id"),
+                            rs.getInt("product_id"),
+                            rs.getInt("change"),
+                            rs.getDate("date")
+                    ));
+                }
+
                 products.add(new Product(
                         id,
                         rs.getString("name"),
