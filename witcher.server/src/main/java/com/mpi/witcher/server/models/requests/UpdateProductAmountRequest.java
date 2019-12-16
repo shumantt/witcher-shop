@@ -3,11 +3,12 @@ package com.mpi.witcher.server.models.requests;
 import java.io.Serializable;
 
 public class UpdateProductAmountRequest implements Serializable {
-    private long id;
+    private int id;
     private String type;
     private int amount;
+    private String userLogin;
 
-    public UpdateProductAmountRequest(long id, String type, int amount) {
+    public UpdateProductAmountRequest(int id, String type, int amount) {
         this.id = id;
         this.type = type;
         this.amount = amount;
@@ -23,11 +24,11 @@ public class UpdateProductAmountRequest implements Serializable {
         this.amount = amount;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -38,5 +39,13 @@ public class UpdateProductAmountRequest implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getUserLogin() {
+        return userLogin;
+    }
+
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
     }
 }

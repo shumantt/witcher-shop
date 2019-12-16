@@ -1,5 +1,6 @@
 package com.mpi.witcher.server.repositories;
 
+import com.mpi.witcher.server.models.HistoryEvent;
 import com.mpi.witcher.server.models.Product;
 import com.mpi.witcher.server.models.Recipe;
 import com.mpi.witcher.server.models.requests.AddItemRequest;
@@ -23,6 +24,9 @@ public class GoodsRepository {
     private static final String FindResourceById = "SELECT * FROM goods WHERE id = ?;";
     private static final String FindProductCategories = "SELECT name FROM categories WHERE id = ?;";
 
+    private static final String AddHistoryEvent = "INSERT INTO history (user_id, product_id, change, date) VALUES (?, ?, ?, now());";
+    private static final String GetHistoryByProductId = "SELECT * FROM history WHERE product_id = ?;";
+
     public boolean addProducableItem(AddProducableItemRequest request) {
         try {
             Connection connection = Database.connect();
@@ -43,6 +47,13 @@ public class GoodsRepository {
                 statement.setInt(3, component.getRequiredQuantity());
                 statement.addBatch();
             }
+
+            statement = connection.prepareStatement(AddHistoryEvent);
+            statement.setString(1, request.getUserLogin());
+            statement.setInt(2, id);
+            statement.setInt(3, 1); // + 1
+            statement.addBatch();
+
             statement.executeBatch();
             connection.commit();
 
@@ -82,7 +93,7 @@ public class GoodsRepository {
         }
     }
 
-    public void produceRecipe(int recipeId) {
+    public void produceRecipe(String userLogin, int recipeId) {
         try {
             Connection connection = Database.connect();
 
@@ -90,8 +101,28 @@ public class GoodsRepository {
             statement.setInt(1, recipeId);
             statement.addBatch();
 
+            PreparedStatement preparedStatement = connection.prepareStatement(FindRecipeComponents);
+            preparedStatement.setInt(1, recipeId);
+            ResultSet itemsResultSet = preparedStatement.executeQuery();
+            while (itemsResultSet.next()) {
+                int required = itemsResultSet.getInt("required_quantity");
+                int product_id = itemsResultSet.getInt("id");
+
+                statement = connection.prepareStatement(AddHistoryEvent);
+                statement.setString(1, userLogin);
+                statement.setInt(2, product_id);
+                statement.setInt(3, -required);
+                statement.addBatch();
+            }
+
             statement = connection.prepareStatement(IncrementGoodsQuantity);
             statement.setInt(1, recipeId);
+            statement.addBatch();
+
+            statement = connection.prepareStatement(AddHistoryEvent);
+            statement.setString(1, userLogin);
+            statement.setInt(2, recipeId);
+            statement.setInt(3, 1); // + 1
             statement.addBatch();
 
             statement.executeBatch();
@@ -153,6 +184,20 @@ public class GoodsRepository {
             int id = rs.getInt("id");
             List<String> categories = getProductCategories(connection, id);
 
+            List<HistoryEvent> history = new ArrayList<>();
+            statement = connection.prepareStatement(GetHistoryByProductId);
+            statement.setInt(1, id);
+            ResultSet hrs = statement.executeQuery();
+            while (hrs.next()){
+                history.add(new HistoryEvent(
+                        rs.getInt("id"),
+                        rs.getString("user_id"),
+                        rs.getInt("product_id"),
+                        rs.getInt("change"),
+                        rs.getDate("date")
+                ));
+            }
+
             List<Product> products = new ArrayList<>();
             while (rs.next()) {
                 products.add(new Product(
@@ -160,7 +205,8 @@ public class GoodsRepository {
                         rs.getString("name"),
                         rs.getString("description"),
                         categories,
-                        rs.getInt("quantity")));
+                        rs.getInt("quantity"),
+                        history));
             }
             return products;
         } catch (SQLException e) {
@@ -168,12 +214,21 @@ public class GoodsRepository {
         }
     }
 
-    public void updateGoodsQuantity(long id, int quantity) throws SQLException {
+    public void updateGoodsQuantity(String userLogin, int id, int quantity) throws SQLException {
         Connection connection = Database.connect();
         PreparedStatement statement = connection.prepareStatement(UpdateGoodsQuantity);
         statement.setInt(1, quantity);
-        statement.setInt(2, (int)id);
-        statement.execute();
+        statement.setInt(2, id);
+        statement.addBatch();
+
+        statement = connection.prepareStatement(AddHistoryEvent);
+        statement.setString(1, userLogin);
+        statement.setInt(2, id);
+        statement.setInt(3, quantity);
+        statement.addBatch();
+
+        statement.executeBatch();
+        connection.commit();
     }
 
     public Product getById(int id) {
@@ -185,12 +240,27 @@ public class GoodsRepository {
 
             List<String> categories = getProductCategories(connection, id);
 
+            List<HistoryEvent> history = new ArrayList<>();
+            statement = connection.prepareStatement(GetHistoryByProductId);
+            statement.setInt(1, id);
+            ResultSet hrs = statement.executeQuery();
+            while (hrs.next()){
+                history.add(new HistoryEvent(
+                     rs.getInt("id"),
+                     rs.getString("user_id"),
+                     rs.getInt("product_id"),
+                        rs.getInt("change"),
+                        rs.getDate("date")
+                ));
+            }
+
             return new Product(
                     id,
                     rs.getString("name"),
                     rs.getString("description"),
                     categories,
-                    rs.getInt("quantity")
+                    rs.getInt("quantity"),
+                    history
             );
         } catch (SQLException e) {
             return null;

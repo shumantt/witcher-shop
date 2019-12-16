@@ -9,7 +9,7 @@ public class Recipe extends Product {
     private boolean enoughResources;
 
     public Recipe(int id, String name, String description, List<String> categories, int quantity, String instruction, List<Component> components, boolean enoughResources) {
-        super(id, name, description, categories, quantity);
+        super(id, name, description, categories, quantity, null);
         this.instruction = instruction;
         this.components = components;
         this.enoughResources = enoughResources;

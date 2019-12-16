@@ -7,6 +7,15 @@ public class AddItemRequest {
     private String name;
     private String description;
     private ArrayList<String> categories;
+    private String userLogin;
+
+    public String getUserLogin() {
+        return userLogin;
+    }
+
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
+    }
 
     public String getName() {
         return name;

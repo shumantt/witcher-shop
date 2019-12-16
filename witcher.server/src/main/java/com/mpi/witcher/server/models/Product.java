@@ -7,14 +7,16 @@ public class Product {
     private String name;
     private String description;
     private List<String> categories;
+    private List<HistoryEvent> history;
     private int quantity;
 
-    public Product(int id, String name, String description, List<String> categories, int quantity) {
+    public Product(int id, String name, String description, List<String> categories, int quantity, List<HistoryEvent> history) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.categories = categories;
         this.quantity = quantity;
+        this.history = history;
     }
 
     public int getId() {
@@ -55,5 +57,13 @@ public class Product {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public List<HistoryEvent> getHistory() {
+        return history;
+    }
+
+    public void setHistory(List<HistoryEvent> history) {
+        this.history = history;
     }
 }

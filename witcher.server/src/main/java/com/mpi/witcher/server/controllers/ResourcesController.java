@@ -2,6 +2,7 @@ package com.mpi.witcher.server.controllers;
 
 import com.mpi.witcher.server.models.Recipe;
 import com.mpi.witcher.server.models.requests.AddProducableItemRequest;
+import com.mpi.witcher.server.models.requests.CookRequest;
 import com.mpi.witcher.server.models.requests.UpdateProductAmountRequest;
 import com.mpi.witcher.server.repositories.GoodsRepository;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +36,8 @@ public class ResourcesController {
     }
 
     @PostMapping("/recipes/cook")
-    public ResponseEntity CookPotionByRecipe(@RequestParam int recipeId) {
-        goodsRepository.produceRecipe(recipeId);
+    public ResponseEntity CookPotionByRecipe(@RequestBody CookRequest request) {
+        goodsRepository.produceRecipe(request.getUserLogin(), request.getRecipeId());
         return ok(null);
     }
 
@@ -48,7 +49,7 @@ public class ResourcesController {
     @PostMapping("/update_amount")
     public ResponseEntity changeAmount(@RequestBody UpdateProductAmountRequest request) {
         try {
-            goodsRepository.updateGoodsQuantity(request.getId(), request.getAmount());
+            goodsRepository.updateGoodsQuantity(request.getUserLogin(), request.getId(), request.getAmount());
         } catch (SQLException e)
         {
             return status(500).build();
@@ -62,8 +63,8 @@ public class ResourcesController {
     }
 
     @PostMapping("/runes/enchant")
-    public ResponseEntity enchantRune(@RequestParam int id) {
-        goodsRepository.produceRecipe(id);
+    public ResponseEntity enchantRune(@RequestParam CookRequest request) {
+        goodsRepository.produceRecipe(request.getUserLogin(), request.getRecipeId());
         return ok(null);
     }
 
