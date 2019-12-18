@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 public class Database {
     private static final String ConnectionString = "jdbc:postgresql://localhost/witcher";
+    //private static final String ConnectionString = "jdbc:postgresql://192.168.99.100:5432/witcher";
 
     public static Connection connect() throws SQLException {
         return DriverManager.getConnection(ConnectionString);

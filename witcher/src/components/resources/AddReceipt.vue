@@ -63,7 +63,7 @@
                 <md-list-item v-for="(ingredient, index) in ingredients" v-bind:key="index">
                     <span>{{getTypeName(ingredient.type)}}</span>
                     <span>{{ingredient.name}}</span>
-                    <span>{{ingredient.quantity}} шт.</span>
+                    <span>{{ingredient.requiredQuantity}} шт.</span>
                     <span><md-button @click="removeIngredient(index)"><md-icon>close</md-icon></md-button></span>
                 </md-list-item>
             </md-list>
@@ -89,7 +89,7 @@
             </div>
             <md-dialog-actions>
                 <md-button class="md-primary" @click="cancelAddIngredient()">Отмена</md-button>
-                <md-button class="md-primary" @click="finishAddIngredient()">Ок</md-button>
+                <md-button class="md-primary" @click="finishAddIngredient()" :disabled="!validIngredientForm">Ок</md-button>
             </md-dialog-actions>
         </md-dialog>
     </div>
@@ -121,6 +121,10 @@
         computed: {
             actionEnabled() {
                 return this.category && this.description && this.instruction && this.name && this.ingredients.length > 0;
+            },
+
+            validIngredientForm() {
+                return this.ingredientForm.type && this.ingredientForm.name && this.ingredientForm.id > 0 && this.ingredientForm.quantity > 0;
             }
         },
         
@@ -147,7 +151,7 @@
                     type: "",
                     name: "",
                     id: -1,
-                    quantity: 0
+                    quantity: 1
                 };
             },
 
@@ -157,7 +161,7 @@
                     type: "",
                     name: "",
                     id: -1,
-                    quantity: 0
+                    quantity: 1
                 };
             },
             

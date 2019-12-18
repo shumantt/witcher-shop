@@ -45,7 +45,7 @@ export const OrdersService = {
     },
 
     getClientOrders(clientLogin) {
-        return axios.get("http://localhost:8080/api/orders?clientLogin=" + clientLogin);
+        return axios.get("http://localhost:8080/api/client/orders?clientLogin=" + clientLogin);
     },
 
     updateStatus(updateRequest) {

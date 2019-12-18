@@ -21,8 +21,8 @@
             <md-field >
                 <label for="role">Должность</label>
                 <md-select v-model="role" name="role" id="role">
-                    <md-option value="manager">Менеджер</md-option>
-                    <md-option value="employee">Сотрудник</md-option>
+                    <md-option value="Manager">Менеджер</md-option>
+                    <md-option value="Employee">Сотрудник</md-option>
                 </md-select>
             </md-field>
             <md-button class="md-raised" @click="addUser">Добавить</md-button>
@@ -35,9 +35,7 @@
 export default {
     name: 'Employees',
     mounted() {
-        this.$store.dispatch("fetchUsers")
-            .then((users) => this.users = users)
-            .catch(console.log);
+        this.fetchData();
     },
     data() {
         return {
@@ -47,8 +45,23 @@ export default {
         }
     },
     methods: {
+        fetchData() {
+             this.$store.dispatch("fetchUsers")
+                .then((users) => this.users = users)
+                .catch(console.log);
+        },
+
         addUser() {
             this.$store.dispatch("addUser", { login: this.name, role: this.role, password: 123 })
+                .then(() => {
+                    this.role = undefined;
+                    this.name = undefined;
+                    this.fetchData();
+                    })
+                .catch(() => {
+                    this.role = undefined;
+                    this.name = undefined;
+                });
         },
 
         consumptionReport(employeeId) {

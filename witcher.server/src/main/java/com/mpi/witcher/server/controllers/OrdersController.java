@@ -16,11 +16,16 @@ public class OrdersController {
 
     private OrdersRepository ordersRepository = new OrdersRepository();
 
-    @GetMapping("/orders")
-    public ResponseEntity GetClientOrders(@RequestParam(required = false) String clientLogin) {
+    @GetMapping("/client/orders")
+    public ResponseEntity getClientOrders(@RequestParam(required = false) String clientLogin) {
         return ok(ordersRepository.getClientOrders(clientLogin));
     }
 
+    @GetMapping("/orders")
+    public ResponseEntity getAllOrders() {
+        //todo
+        return ok(null);
+    }
 
     @PostMapping("/orders")
     public ResponseEntity AddOrder(@RequestBody AddOrderRequest request) {

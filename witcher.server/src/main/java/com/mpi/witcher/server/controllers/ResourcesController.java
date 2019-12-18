@@ -63,7 +63,7 @@ public class ResourcesController {
     }
 
     @PostMapping("/runes/enchant")
-    public ResponseEntity enchantRune(@RequestParam CookRequest request) {
+    public ResponseEntity enchantRune(@RequestBody CookRequest request) {
         goodsRepository.produceRecipe(request.getUserLogin(), request.getRecipeId());
         return ok(null);
     }

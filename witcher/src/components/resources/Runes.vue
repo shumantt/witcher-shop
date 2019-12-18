@@ -38,7 +38,7 @@
                 </md-card-content>
 
                 <md-card-actions>
-                    <md-button class="md-raised" @click="enchantClick()" v-if="!selected.enchanted">Зачаровать</md-button>
+                    <md-button class="md-raised" @click="enchantClick()" v-if="!selected.enchanted && isEmployee">Зачаровать</md-button>
                     <md-button class="md-raised" @click="moreClick()">Подробнее</md-button>
                 </md-card-actions>
             </md-card>
@@ -71,7 +71,8 @@
                 runes: [],
                 filteredRunes: [],
                 successEnchant: false,
-                searchText: ""
+                searchText: "",
+                isEmployee: this.$store.state.isEmployee
             }
         },
         

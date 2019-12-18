@@ -1,0 +1,25 @@
+баги
+
+Для работника
+1. У рецептов категория как у ингридиентов - нужно другие, лучше одну и такие:
+-Несмертельные
+-Смертельные 
+-Усиливающие можно хардкокд строкой
+
+2. Метод cook падает, но возвращает 200  (рецепты, выбрать рецепт , приготовить)
+org.postgresql.util.PSQLException: Cannot commit when autoCommit is enabled.
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.commit(AbstractJdbc2Connection.java:705)
+	at com.mpi.witcher.server.repositories.GoodsRepository.produceRecipe(GoodsRepository.java:129)
+	at com.mpi.witcher.server.controllers.ResourcesController.CookPotionByRecipe(ResourcesController.java:40)
+
+3. Метод getInfo не работает, параметры с фронта приходят вроде
+4. На добавление рецепта то же самое что и в 2 пункте, с базой что-то. мб только у меня - проверь
+5. В enchantRune нужно чтобы у руны поменялся статус и я на интерфейсе галочку с выставил - зачарована. А текущий вариант что-то сломал в базе, лол
+6. Сделать метод получения всех заказов для работника (без фильтра по клиенту) и добавить бы в пустую базу пару штук
+7. Расход - приход - то же что что 2,4
+
+Для Менеджера
+8. Отчеты
+
+Для клиента
+9. Добавить название зелья в методе getClientOrders (и в методе в пунтке 6 тоже добавить)

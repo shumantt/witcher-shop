@@ -16,9 +16,6 @@
         </div>
         <div class="search-options">
             <div class="md-layout ">
-                <div class="md-layout-item">
-                    <md-checkbox v-model="includeSimple" class="md-primary">Простые</md-checkbox>
-                </div>
                 <div class="md-layout-item selector">
                     <md-field >
                         <label for="category">Категория</label>
@@ -31,14 +28,6 @@
                     </md-field>
                 </div>
             </div>
-            <div class="md-layout">
-                <div class="md-layout-item">
-                    <md-checkbox v-model="includeEnchanted" class="md-primary">Зачарованные</md-checkbox>
-                </div>
-                <div class="md-layout-item">
-                    <md-checkbox v-model="includeEnoughResources" class="md-primary">Достаточно ресурсов</md-checkbox>
-                </div>
-            </div>
         </div>
         <div class="table-container">
             <md-table v-model="filteredRecipes" @md-selected="onSelect" class="main-table" >
@@ -47,9 +36,9 @@
                         <md-checkbox v-model="item.enoughResources" class="md-primary" disabled></md-checkbox>
                     </md-table-cell>
                     <md-table-cell md-label="Название">{{ item.name }}</md-table-cell>
-                    <md-table-cell md-label="Категоря">{{ item.category }}</md-table-cell>
+                    <md-table-cell md-label="Категория">{{ item.categories[0] }}</md-table-cell>
                     <md-table-cell md-label="Компоненты">{{ item.components }}</md-table-cell>
-                    <md-table-cell md-label="На складе">{{item.potionQuantity}}</md-table-cell>
+                    <md-table-cell md-label="На складе">{{item.quantity}}</md-table-cell>
                 </md-table-row>
             </md-table>
         </div>

@@ -28,7 +28,7 @@ public class UserController {
 
         try {
             UserRoles userRole = UserRoles.valueOf(role);
-            boolean isOk = usersRepository.createUser(user.getLogin(), user.getPassword(), userRole.ordinal());
+            boolean isOk = usersRepository.createUser(user.getLogin(), user.getPassword(), userRole.ordinal() + 1);
 
             if (isOk) {
                 return ok("ok");

@@ -1,30 +1,17 @@
 <template>
      <div class="consumption-form">
         <div class="md-title">Оформление заказа</div>
-        <div class="category selection">
-            <div class="md-layout">
-                <div class="md-layout-item label">
-                    <div class="md-subtitle">Категория</div>
-                </div>
-                <div class="md-layout-item selector">
-                     <md-field>
-                        <md-select v-model="category" name="category" id="category" :md-selected="categorySelected()">
-                            <md-option value="Несмертельные">Несмертельные</md-option>
-                            <md-option value="Смертельные">Смертельные</md-option>
-                            <md-option value="Усиливающие">Усиливающие</md-option>
-                        </md-select>
-                    </md-field>
-                </div>
-            </div>
-        </div>
         <div class="name selection">
             <div class="md-layout">
                 <div class="md-layout-item label">
-                    <div class="md-subtitle">Наименование</div>
+                    <div class="md-subtitle">Зелье</div>
                 </div>
-                <div class="md-layout-item selector">
-                   <md-autocomplete v-model="name" :md-options="names"> 
-                   </md-autocomplete>
+                 <div class="md-layout-item selector">
+                    <md-field>
+                        <md-select v-model="id">
+                            <md-option v-for="recipe in recipes" v-bind:key="recipe.id" :value="recipe.id">{{recipe.name}}</md-option>
+                        </md-select>
+                    </md-field>
                 </div>
             </div>
         </div>
@@ -65,52 +52,41 @@ export default {
     name: 'Order',
     data() {
         return {
-            category: null,
-            name: null,
+            id: 0,
             number: 0,
             phone: null,
             resultMessage: null,
-            recipes:[],
-            namesFilterdBy: null
+            recipes:[]
         }
     },
     mounted() {
-         this.$store.dispatch("fetchRecipes")
+         this.fetchRecipes();
+    },
+    computed: {
+        enabledAction() {
+            return this.id > 0 && this.number > 0 && this.phone;
+        }
+    },
+    methods: {
+        fetchRecipes() {
+            this.$store.dispatch("fetchRecipes")
                 .then((recipes) => {
                     console.log("fetching recipes");
                     this.recipes = recipes;
                 })
                 .catch((error) => console.log(error));
-    },
-    computed: {
-        enabledAction() {
-            return this.category != null && this.name != null && this.category !== '' && this.name !== '' && this.number > 0;
         },
-        names() {
-            if(!this.category)
-                return [];
-            return this.recipes.filter((r) => r.category === this.category).map(r => r.name);
-        }
-    },
-    methods: {
+
         clear() {
-            this.category = null;
-            this.name = null;
+            this.id = undefined;
             this.number = 0;
-            this.phone = null;
-        },
-        categorySelected() {
-            if(!this.category || this.namesFilterdBy === this.category)
-                return;
-            this.namesFilterdBy = this.category;
-            this.name = null;
-            this.$forceUpdate();
+            this.phone = undefined;
         },
 
         makeOrder() {
             this.resultMessage = null;
-            if(!this.category && !this.name) {
-                this.resultMessage = "Укажите категорию и наименование зелья";
+            if(this.id <= 0) {
+                this.resultMessage = "Выберите зелье";
                 return;
             }
 
@@ -118,9 +94,8 @@ export default {
                 this.resultMessage = "Количестов должно быть больше 0";
                 return;
             }
-            let selectedRecipe = this.recipes.find(r => r.name === this.name && r.category === this.category);
             let order = {
-                potionId: selectedRecipe.id,
+                potionId: this.id,
                 quantity: this.number,
                 clientLogin: this.$store.state.user.login,
                 phone: this.phone

@@ -4,3 +4,8 @@ docker container run -p 5432:5432 --name witcher --detach witcher-base
 psql -h localhost -U postgres
 postgres=# CREATE ROLE username superuser;
 postgres=# ALTER ROLE username WITH LOGIN;
+
+CREATE ROLE shuma superuser;
+ALTER ROLE shuma WITH LOGIN;
+
+192.168.99.100

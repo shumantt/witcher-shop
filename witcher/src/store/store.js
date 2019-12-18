@@ -175,7 +175,10 @@ const actions = {
 
     addReceipt(context, request) {
         return new Promise((resolve, reject) => {
-            RecipesService.addReceipt(request)
+            RecipesService.addReceipt({
+                ...request,
+                userLogin: context.state.user.login
+            })
                 .then(() => resolve())
                 .catch(error => reject(error))
         });
