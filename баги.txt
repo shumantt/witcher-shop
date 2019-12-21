@@ -23,3 +23,6 @@ org.postgresql.util.PSQLException: Cannot commit when autoCommit is enabled.
 
 Для клиента
 9. Добавить название зелья в методе getClientOrders (и в методе в пунтке 6 тоже добавить)
+
+
++ нужно  закрывать соединения с базой, иначе все сломается при нагрузке)

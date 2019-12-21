@@ -29,6 +29,8 @@ public class UsersRepository {
                         rs.getString("password")
                 ));
             }
+            connection.commit();
+            connection.close();
             return users;
         } catch (SQLException e) {
             return null;
@@ -44,6 +46,7 @@ public class UsersRepository {
             statement.setInt(3, role);
             statement.setString(4, password);
             statement.execute();
+            connection.close();
         } catch (SQLException e) {
             return false;
         }
@@ -58,6 +61,7 @@ public class UsersRepository {
             ResultSet resultSet = statement.executeQuery();
 
             resultSet.next();
+            connection.close();
             return Optional.of(new User(
                     resultSet.getString("login"),
                     resultSet.getString("name"),

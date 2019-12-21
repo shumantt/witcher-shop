@@ -9,6 +9,8 @@ public class Database {
     //private static final String ConnectionString = "jdbc:postgresql://192.168.99.100:5432/witcher";
 
     public static Connection connect() throws SQLException {
-        return DriverManager.getConnection(ConnectionString);
+        Connection connection = DriverManager.getConnection(ConnectionString);
+        connection.setAutoCommit(false);
+        return connection;
     }
 }

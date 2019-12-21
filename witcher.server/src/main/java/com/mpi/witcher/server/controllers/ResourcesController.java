@@ -21,7 +21,7 @@ public class ResourcesController {
 
 
     @GetMapping("/recipes")
-    public ResponseEntity  GetAllRecipes() {
+    public ResponseEntity  GetAllRecipes() throws SQLException {
         List<Recipe> recipes = goodsRepository.getRecipes();
         return ok(recipes);
     }

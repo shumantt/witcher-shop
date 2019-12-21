@@ -84,9 +84,12 @@ public class GoodsRepository {
             ResultSet resultSet = statement.executeQuery();
 
             while(resultSet.next()){
-                if(resultSet.getInt("required_quantity") > resultSet.getInt("quantity"))
+                if(resultSet.getInt("required_quantity") > resultSet.getInt("quantity")) {
+                    connection.close();
                     return false;
+                }
             }
+            connection.close();
             return true;
         } catch (SQLException e) {
             return false;
@@ -127,12 +130,13 @@ public class GoodsRepository {
 
             statement.executeBatch();
             connection.commit();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public List<Recipe> getRecipes() {
+    public List<Recipe> getRecipes() throws SQLException {
         try {
             Connection connection = Database.connect();
             Statement statement = connection.createStatement();
@@ -167,10 +171,11 @@ public class GoodsRepository {
 
                 recipes.add(new Recipe(id, name, desc, categories, quantity, instruction, components, recipeHasEnoughComponents(id)));
             }
-
+            connection.commit();
+            connection.close();
             return recipes;
         } catch (SQLException e) {
-            return null;
+            throw e;
         }
     }
 
@@ -209,6 +214,7 @@ public class GoodsRepository {
                         rs.getInt("quantity"),
                         history));
             }
+            connection.close();
             return products;
         } catch (SQLException e) {
             return null;
@@ -230,6 +236,7 @@ public class GoodsRepository {
 
         statement.executeBatch();
         connection.commit();
+        connection.close();
     }
 
     public Product getById(int id) {
@@ -254,7 +261,7 @@ public class GoodsRepository {
                         rs.getDate("date")
                 ));
             }
-
+            connection.close();
             return new Product(
                     id,
                     rs.getString("name"),
