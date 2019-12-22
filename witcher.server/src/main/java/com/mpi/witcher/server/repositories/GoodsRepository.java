@@ -48,11 +48,7 @@ public class GoodsRepository {
                 statement.addBatch();
             }
 
-            statement = connection.prepareStatement(AddHistoryEvent);
-            statement.setString(1, request.getUserLogin());
-            statement.setInt(2, id);
-            statement.setInt(3, 1); // + 1
-            statement.addBatch();
+            addHistoryEventToBatch(connection, request.getUserLogin(), id, 1);
 
             statement.executeBatch();
             connection.commit();
@@ -110,23 +106,14 @@ public class GoodsRepository {
             while (itemsResultSet.next()) {
                 int required = itemsResultSet.getInt("required_quantity");
                 int product_id = itemsResultSet.getInt("id");
-
-                statement = connection.prepareStatement(AddHistoryEvent);
-                statement.setString(1, userLogin);
-                statement.setInt(2, product_id);
-                statement.setInt(3, -required);
-                statement.addBatch();
+                addHistoryEventToBatch(connection, userLogin, product_id, -required);
             }
 
             statement = connection.prepareStatement(IncrementGoodsQuantity);
             statement.setInt(1, recipeId);
             statement.addBatch();
 
-            statement = connection.prepareStatement(AddHistoryEvent);
-            statement.setString(1, userLogin);
-            statement.setInt(2, recipeId);
-            statement.setInt(3, 1); // + 1
-            statement.addBatch();
+            addHistoryEventToBatch(connection, userLogin, recipeId, 1);
 
             statement.executeBatch();
             connection.commit();
@@ -188,23 +175,9 @@ public class GoodsRepository {
 
             List<Product> products = new ArrayList<>();
             while (rs.next()) {
-
                 int id = rs.getInt("id");
                 List<String> categories = getProductCategories(connection, id);
-
-                List<HistoryEvent> history = new ArrayList<>();
-                statement = connection.prepareStatement(GetHistoryByProductId);
-                statement.setInt(1, id);
-                ResultSet hrs = statement.executeQuery();
-                while (hrs.next()){
-                    history.add(new HistoryEvent(
-                            rs.getInt("id"),
-                            rs.getString("user_id"),
-                            rs.getInt("product_id"),
-                            rs.getInt("change"),
-                            rs.getDate("date")
-                    ));
-                }
+                List<HistoryEvent> history = getProductHistory(connection, id);
 
                 products.add(new Product(
                         id,
@@ -228,11 +201,7 @@ public class GoodsRepository {
         statement.setInt(2, id);
         statement.addBatch();
 
-        statement = connection.prepareStatement(AddHistoryEvent);
-        statement.setString(1, userLogin);
-        statement.setInt(2, id);
-        statement.setInt(3, quantity);
-        statement.addBatch();
+        addHistoryEventToBatch(connection, userLogin, id, quantity);
 
         statement.executeBatch();
         connection.commit();
@@ -247,20 +216,8 @@ public class GoodsRepository {
             ResultSet rs = statement.executeQuery();
 
             List<String> categories = getProductCategories(connection, id);
+            List<HistoryEvent> history = getProductHistory(connection, id);
 
-            List<HistoryEvent> history = new ArrayList<>();
-            statement = connection.prepareStatement(GetHistoryByProductId);
-            statement.setInt(1, id);
-            ResultSet hrs = statement.executeQuery();
-            while (hrs.next()){
-                history.add(new HistoryEvent(
-                     rs.getInt("id"),
-                     rs.getString("user_id"),
-                     rs.getInt("product_id"),
-                        rs.getInt("change"),
-                        rs.getDate("date")
-                ));
-            }
             connection.close();
             return new Product(
                     id,
@@ -273,6 +230,31 @@ public class GoodsRepository {
         } catch (SQLException e) {
             return null;
         }
+    }
+
+    private void addHistoryEventToBatch(Connection connection, String userLogin, int productId, int change) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(AddHistoryEvent);
+        statement.setString(1, userLogin);
+        statement.setInt(2, productId);
+        statement.setInt(3, change);
+        statement.addBatch();
+    }
+
+    private List<HistoryEvent> getProductHistory(Connection connection, int productId) throws SQLException {
+        List<HistoryEvent> history = new ArrayList<>();
+        PreparedStatement statement = connection.prepareStatement(GetHistoryByProductId);
+        statement.setInt(1, productId);
+        ResultSet hrs = statement.executeQuery();
+        while (hrs.next()){
+            history.add(new HistoryEvent(
+                    hrs.getInt("id"),
+                    hrs.getString("user_id"),
+                    hrs.getInt("product_id"),
+                    hrs.getInt("change"),
+                    hrs.getDate("date")
+            ));
+        }
+        return history;
     }
 
     private List<String> getProductCategories(Connection connection, int productId) throws SQLException {
