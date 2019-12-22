@@ -31,3 +31,7 @@ INSERT INTO recipe_goods VALUES
 INSERT INTO goods_categories VALUES
     (1, 6), (1, 4), (2, 4), (2, 7), (3, 7), (3, 4), (3, 5),
     (4, 2), (5, 2), (6, 2), (7, 1), (8, 1), (9, 3);
+
+INSERT INTO orders (client_id, goods_id, quantity, phone, status) VALUES
+    ('witcher', 1, 2, '+7 (999) 555-35-35', 1),
+    ('witcher', 2, 1, '+7 (999) 555-35-35', 1);

@@ -23,8 +23,7 @@ public class OrdersController {
 
     @GetMapping("/orders")
     public ResponseEntity getAllOrders() {
-        //todo
-        return ok(null);
+        return ok(ordersRepository.getOrders());
     }
 
     @PostMapping("/orders")
