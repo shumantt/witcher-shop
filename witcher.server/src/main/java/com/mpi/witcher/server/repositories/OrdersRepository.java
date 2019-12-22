@@ -23,6 +23,7 @@ public class OrdersRepository {
             statement.setInt(1, request.getNewStatus());
             statement.setInt(2, request.getOrderId());
             statement.execute();
+            connection.commit();
             connection.close();
             return true;
         } catch (SQLException e) {
@@ -42,6 +43,7 @@ public class OrdersRepository {
 
             ResultSet rs = statement.executeQuery();
             rs.next();
+            connection.commit();
             connection.close();
             return rs.getInt(1);
         } catch (SQLException e) {

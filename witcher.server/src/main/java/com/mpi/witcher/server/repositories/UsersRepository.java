@@ -46,6 +46,7 @@ public class UsersRepository {
             statement.setInt(3, role);
             statement.setString(4, password);
             statement.execute();
+            connection.commit();
             connection.close();
         } catch (SQLException e) {
             return false;

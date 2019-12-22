@@ -66,6 +66,7 @@ public class GoodsRepository {
             statement.setString(1, request.getName());
             statement.setString(2, request.getDescription());
             statement.execute();
+            connection.commit();
             return true;
         } catch (SQLException e) {
             return false;
