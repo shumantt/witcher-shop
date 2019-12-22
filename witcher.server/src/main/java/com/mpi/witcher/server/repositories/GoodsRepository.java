@@ -220,6 +220,7 @@ public class GoodsRepository {
             List<HistoryEvent> history = getProductHistory(connection, id);
 
             connection.close();
+            rs.next();
             return new Product(
                     id,
                     rs.getString("name"),

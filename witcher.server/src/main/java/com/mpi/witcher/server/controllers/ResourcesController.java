@@ -1,5 +1,6 @@
 package com.mpi.witcher.server.controllers;
 
+import com.mpi.witcher.server.models.Product;
 import com.mpi.witcher.server.models.Recipe;
 import com.mpi.witcher.server.models.requests.AddProducableItemRequest;
 import com.mpi.witcher.server.models.requests.CookRequest;
@@ -90,6 +91,7 @@ public class ResourcesController {
                   date: "01.10.2019"}]
            }
         * */
-        return ok(goodsRepository.getById(id));
+        Product product = goodsRepository.getById(id);
+        return ok(product);
     }
 }
