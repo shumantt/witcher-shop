@@ -19,10 +19,10 @@ const state = {
 
 const getters = {
     isLoggedIn: state => !!state.user,
-    isEmployee: state => state.user.role == "employee" || state.user.role == "manager",
-    isManager: state => state.user.role == "manager",
-    isWorker: state => state.user.role == "employee",
-    isClient: state => state.user.role == "client"
+    isEmployee: state =>  state.user && state.user.role == "employee" || state.user.role == "manager",
+    isManager: state => state.user && state.user.role == "manager",
+    isWorker: state => state.user && state.user.role == "employee",
+    isClient: state => state.user && state.user.role == "client"
 }
 
 const mutations = {

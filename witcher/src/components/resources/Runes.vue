@@ -5,7 +5,7 @@
                 <div class="md-layout-item">
                     <md-field>
                         <md-icon >search</md-icon>
-                        <md-input v-model="searchText" ></md-input>
+                        <md-input v-model="searchText" v-on:keyup.enter="filterRunes()"></md-input>
                     </md-field>
                 </div>
                 <div class="md-layout-item">
@@ -20,7 +20,8 @@
                         <md-checkbox v-model="item.enchanted" class="md-primary" disabled></md-checkbox>
                     </md-table-cell>
                     <md-table-cell md-label="Название">{{ item.name }}</md-table-cell>
-                    <md-table-cell md-label="Категория">{{ item.category }}</md-table-cell>
+                    <md-table-cell md-label="Категория">{{ item.categories[0] }}</md-table-cell>
+                    <md-table-cell md-label="На складе">{{ item.quantity }}</md-table-cell>
                 </md-table-row>
             </md-table>
         </div>
@@ -72,7 +73,7 @@
                 filteredRunes: [],
                 successEnchant: false,
                 searchText: "",
-                isEmployee: this.$store.state.isEmployee
+                isEmployee: this.$store.getters.isEmployee
             }
         },
         
@@ -92,6 +93,7 @@
             enchantClick() {
                 this.$store.dispatch("enchantRune", this.selected.id)
                     .then(() => {
+                        this.successEnchant = true;
                         this.fetchRunes();
                        // fakeData[0].enchanted = true; //TODO удалить
                     })
@@ -120,5 +122,9 @@
 <style scoped>
     .main-table {
         height: 480px;
+    }
+    
+    .modal-content {
+        margin: 10px;
     }
 </style>

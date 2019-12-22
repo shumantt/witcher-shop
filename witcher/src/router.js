@@ -99,14 +99,20 @@ const routes = [
       }
 ]
 
-let router =  new VueRouter({
+const router =  new VueRouter({
     routes,
     mode: 'history'
 });
 
+const clientPaths = ['auth', 'client-orders', 'order'];
+
 router.beforeEach((to, from, next) => {
     if (store.getters.isLoggedIn || to.name === 'auth') {
-        next()
+        if(store.getters.isClient && !clientPaths.includes(to.name) && to.path != '/auth') {
+            next('/order');
+            return
+        }
+        next();
         return
     }
     next('/auth')
