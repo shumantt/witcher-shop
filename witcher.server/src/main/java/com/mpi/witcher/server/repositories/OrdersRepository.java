@@ -14,7 +14,7 @@ import java.util.List;
 
 public class OrdersRepository {
 
-    private static final String FindUserOrders = "SELECT * FROM orders WHERE client_id = ?;";
+    private static final String FindUserOrders = "SELECT o.*, g.name as \"potion_name\" FROM orders o, goods g WHERE o.goods_id = g.id AND o.client_id = ?;";
     private static final String UpdateOrderStatus = "UPDATE orders SET status = ? WHERE id = ?;";
     private static final String AddOrder = "INSERT INTO orders (client_id, goods_id, phone, status, quantity) VALUES (?, ?, ?, ?, ?) RETURNING id;";
 
@@ -66,7 +66,8 @@ public class OrdersRepository {
                         rs.getInt("quantity"),
                         clientLogin,
                         rs.getString("phone"),
-                        rs.getInt("status")
+                        rs.getInt("status"),
+                        rs.getString("potion_name")
                 ));
             }
             connection.close();

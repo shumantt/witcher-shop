@@ -9,16 +9,18 @@ public class Order implements Serializable {
     private String clientLogin;
     private String phone;
     private int status;
+    private String potionName;
 
     public Order() {}
 
-    public Order(long id, long potionId, int quantity, String clientLogin, String phone, int status) {
+    public Order(long id, long potionId, int quantity, String clientLogin, String phone, int status, String potionName) {
         this.id = id;
         this.potionId = potionId;
         this.quantity = quantity;
         this.clientLogin = clientLogin;
         this.phone = phone;
         this.status = status;
+        this.potionName = potionName;
     }
 
     public long getId() {
@@ -67,5 +69,13 @@ public class Order implements Serializable {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getPotionName() {
+        return potionName;
+    }
+
+    public void setPotionName(String potionName) {
+        this.potionName = potionName;
     }
 }
