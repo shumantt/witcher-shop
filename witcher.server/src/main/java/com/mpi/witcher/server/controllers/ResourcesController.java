@@ -49,13 +49,11 @@ public class ResourcesController {
 
     @PostMapping("/update_amount")
     public ResponseEntity changeAmount(@RequestBody UpdateProductAmountRequest request) {
-        try {
-            goodsRepository.updateGoodsQuantity(request.getUserLogin(), request.getId(), request.getAmount());
-        } catch (SQLException e)
-        {
+        if(goodsRepository.updateGoodsQuantity(request.getUserLogin(), request.getId(), request.getAmount())){
+            return ok(null);
+        } else {
             return status(500).build();
         }
-        return ok(null);
     }
 
     @GetMapping("/runes")

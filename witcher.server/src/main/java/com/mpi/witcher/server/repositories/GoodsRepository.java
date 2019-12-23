@@ -6,6 +6,7 @@ import com.mpi.witcher.server.models.Recipe;
 import com.mpi.witcher.server.models.requests.AddItemRequest;
 import com.mpi.witcher.server.models.requests.AddProducableItemRequest;
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +49,9 @@ public class GoodsRepository {
                 statement.addBatch();
             }
 
-            addHistoryEventToBatch(connection, request.getUserLogin(), id, 1);
+            Statement s = addHistoryEventToBatch(connection, request.getUserLogin(), id, 1);
 
-            statement.executeBatch();
+            s.executeBatch();
             connection.commit();
 
             return true;
@@ -114,9 +115,9 @@ public class GoodsRepository {
             statement.setInt(1, recipeId);
             statement.addBatch();
 
-            addHistoryEventToBatch(connection, userLogin, recipeId, 1);
+            Statement s = addHistoryEventToBatch(connection, userLogin, recipeId, 1);
 
-            statement.executeBatch();
+            s.executeBatch();
             connection.commit();
             connection.close();
         } catch (SQLException e) {
@@ -195,18 +196,23 @@ public class GoodsRepository {
         }
     }
 
-    public void updateGoodsQuantity(String userLogin, int id, int quantity) throws SQLException {
-        Connection connection = Database.connect();
-        PreparedStatement statement = connection.prepareStatement(UpdateGoodsQuantity);
-        statement.setInt(1, quantity);
-        statement.setInt(2, id);
-        statement.addBatch();
+    public boolean updateGoodsQuantity(String userLogin, int id, int quantity) {
+        try {
+            Connection connection = Database.connect();
+            PreparedStatement statement = connection.prepareStatement(UpdateGoodsQuantity);
+            statement.setInt(1, quantity);
+            statement.setInt(2, id);
+            statement.addBatch();
 
-        addHistoryEventToBatch(connection, userLogin, id, quantity);
+            Statement s = addHistoryEventToBatch(connection, userLogin, id, quantity);
 
-        statement.executeBatch();
-        connection.commit();
-        connection.close();
+            s.executeBatch();
+            connection.commit();
+            connection.close();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     public Product getById(int id) {
@@ -234,12 +240,13 @@ public class GoodsRepository {
         }
     }
 
-    private void addHistoryEventToBatch(Connection connection, String userLogin, int productId, int change) throws SQLException {
+    private Statement addHistoryEventToBatch(Connection connection, String userLogin, int productId, int change) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(AddHistoryEvent);
         statement.setString(1, userLogin);
         statement.setInt(2, productId);
         statement.setInt(3, change);
         statement.addBatch();
+        return statement;
     }
 
     private List<HistoryEvent> getProductHistory(Connection connection, int productId) throws SQLException {
