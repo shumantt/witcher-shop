@@ -15,9 +15,9 @@ public class GoodsRepository {
     private static final String AddProducableItemSql = "INSERT INTO goods (name, description, instruction, is_producable) VALUES (?, ?, ?, true) RETURNING id;";
     private static final String AddProducableItemComponentsSql = "INSERT INTO recipe_goods (recipe_id, component_id, required_quantity) VALUES (?, ?, ?);";
     private static final String AddComponentItemSql = "INSERT INTO goods (name, description) VALUES (?, ?);";
-    private static final String UpdateGoodsQuantity = "UPDATE goods SET quantity = MAX(quantity + ?, 0) WHERE id = ?;";
+    private static final String UpdateGoodsQuantity = "UPDATE goods SET quantity = GREATEST(quantity + ?, 0) WHERE id = ?;";
     private static final String IncrementGoodsQuantity = "UPDATE goods SET quantity = quantity + 1 WHERE id = ?;";
-    private static final String DecreaseComponentsCount = "UPDATE goods SET quantity = MAX(quantity - required_quantity, 0) FROM recipe_goods rg WHERE rg.recipe_id = ? AND rg.component_id = id;";
+    private static final String DecreaseComponentsCount = "UPDATE goods SET quantity = GREATEST(quantity - required_quantity, 0) FROM recipe_goods rg WHERE rg.recipe_id = ? AND rg.component_id = id;";
     private static final String FindRecipeComponents = "SELECT rg.required_quantity, g.quantity, g.id, g.name FROM goods g, recipe_goods rg WHERE rg.recipe_id = ? AND rg.component_id = g.id;";
     private static final String FindAllRecipes = "SELECT * FROM goods WHERE is_producable = true;";
     private static final String FindGoodsByCategory = "SELECT g.*, c.name \"category\" FROM goods g, categories c, goods_categories gc WHERE gc.category_id = c.id AND gc.goods_id = g.id AND c.name = ?;";
