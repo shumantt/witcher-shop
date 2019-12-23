@@ -12,7 +12,7 @@ import java.util.List;
 
 public class GoodsRepository {
     private static final String AddProducableItemSql = "INSERT INTO goods (name, description, instruction, is_producable) VALUES (?, ?, ?, true) RETURNING id;";
-    private static final String AddProducableItemComponentsSql = "INSERT INTO recipe_goods (recipe_id, component_id, required_quantity) VALUES (?, ?, ?, true) RETURNING id;";
+    private static final String AddProducableItemComponentsSql = "INSERT INTO recipe_goods (recipe_id, component_id, required_quantity) VALUES (?, ?, ?);";
     private static final String AddComponentItemSql = "INSERT INTO goods (name, description) VALUES (?, ?);";
     private static final String UpdateGoodsQuantity = "UPDATE goods SET quantity = ? WHERE id = ?;";
     private static final String IncrementGoodsQuantity = "UPDATE goods SET quantity = quantity + 1 WHERE id = ?;";
