@@ -151,15 +151,100 @@ public class ReportController {
 
     @GetMapping("/workload/employee")
     public ResponseEntity getWorkloadReport(@RequestParam String login) {
-        // TODO отчет загруженности конкретного сотрудника
-        // формат ответа такой же, как в getBaseReport
-        return ok(null);
+        List<User> users = usersRepository.getAll();
+
+        List<ReportResponse.NameValuePair> kvData = new ArrayList<>();
+        List<ReportResponse.ChartData> charts = new ArrayList<>();
+
+        Calendar calendar = Calendar.getInstance();
+        int endMonth = calendar.get(Calendar.MONTH);
+        calendar.add(Calendar.YEAR, -1);
+
+        List<String> labels = new ArrayList<>();
+        int month = calendar.get(Calendar.MONTH);
+        while (month < endMonth) {
+            labels.add(Integer.toString(month++));
+        }
+        List<ReportResponse.ChartData.Dataset> datasets = new ArrayList<>();
+        for(User user : users) {
+            if(!user.getLogin().equalsIgnoreCase(login))
+                continue;
+            List<HistoryEvent> history = goodsRepository.getHistoryByUserId(user.getLogin());
+            history.sort(Comparator.comparing(HistoryEvent::getDate).reversed());
+
+            List<Float> values = new ArrayList<>();
+            int i = 0;
+            int prevMonth = -1;
+            while ((history.size() > i) && (history.get(i).getDate().compareTo(calendar.getTime()) >= 0)) {
+                Calendar date = Calendar.getInstance();
+                date.setTime(history.get(i).getDate());
+                month = date.get(Calendar.MONTH);
+                if(month != prevMonth) {
+                    values.add((float) history.get(i).getChange());
+                } else {
+                    int j = values.size() - 1;
+                    values.set(j, values.get(j) + history.get(i).getChange());
+                }
+                prevMonth = month;
+                i++;
+            }
+            datasets.add(new ReportResponse.ChartData.Dataset(user.getName(), values));
+        }
+        charts.add(new ReportResponse.ChartData(labels, datasets));
+
+        ReportResponse response = new ReportResponse(kvData, charts);
+        return ok(response);
     }
 
     @GetMapping("/kpi/employee")
     public ResponseEntity getKpiReport(@RequestParam String login) {
-        // TODO отчет kpi конкретного сотрудника
-        // формат ответа такой же, как в getBaseReport
-        return ok(null);
+        List<Product> products = goodsRepository.getProductsByCategory("Зелья");
+        List<User> users = usersRepository.getAll();
+
+        List<ReportResponse.NameValuePair> kvData = new ArrayList<>();
+        List<ReportResponse.ChartData> charts = new ArrayList<>();
+
+        Calendar calendar = Calendar.getInstance();
+        int endMonth = calendar.get(Calendar.MONTH);
+        calendar.add(Calendar.YEAR, -1);
+
+        List<String> labels = new ArrayList<>();
+        int month = calendar.get(Calendar.MONTH);
+        while (month < endMonth) {
+            labels.add(Integer.toString(month++));
+        }
+        List<ReportResponse.ChartData.Dataset> datasets = new ArrayList<>();
+        for(User user : users) {
+            if(!user.getLogin().equalsIgnoreCase(login))
+                continue;
+            List<HistoryEvent> history = goodsRepository.getHistoryByUserId(user.getLogin());
+            history.sort(Comparator.comparing(HistoryEvent::getDate).reversed());
+
+            List<Float> values = new ArrayList<>();
+            int i = 0;
+            int prevMonth = -1;
+            while ((history.size() > i) && (history.get(i).getDate().compareTo(calendar.getTime()) >= 0)) {
+                for(Product p : products) {
+                    if(p.getId() == history.get(i).getProductId()) { // is potion
+                        Calendar date = Calendar.getInstance();
+                        date.setTime(history.get(i).getDate());
+                        month = date.get(Calendar.MONTH);
+                        if(month != prevMonth) {
+                            values.add((float) history.get(i).getChange());
+                        } else {
+                            int j = values.size() - 1;
+                            values.set(j, values.get(j) + history.get(i).getChange());
+                        }
+                        prevMonth = month;
+                        i++;
+                    }
+                }
+            }
+            datasets.add(new ReportResponse.ChartData.Dataset(user.getName(), values));
+        }
+        charts.add(new ReportResponse.ChartData(labels, datasets));
+
+        ReportResponse response = new ReportResponse(kvData, charts);
+        return ok(response);
     }
 }
