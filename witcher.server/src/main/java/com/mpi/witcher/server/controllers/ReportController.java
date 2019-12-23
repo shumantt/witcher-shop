@@ -61,7 +61,7 @@ public class ReportController {
 
         Calendar calendar = Calendar.getInstance();
         int endMonth = calendar.get(Calendar.MONTH);
-        calendar.add(Calendar.DATE, -period);
+        calendar.add(Calendar.MONTH, -period);
 
         List<String> labels = new ArrayList<>();
         int month = calendar.get(Calendar.MONTH);
