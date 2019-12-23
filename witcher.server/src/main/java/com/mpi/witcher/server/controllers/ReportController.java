@@ -228,9 +228,9 @@ public class ReportController {
             int i = 0;
             int j = 0;
             int currMonth = month;
-            while ((history.size() > i) && (history.get(i).getDate().compareTo(calendar.getTime()) >= 0)) {
-                for(Product p : products) {
-                    if(p.getId() == history.get(i).getProductId()) { // is potion
+            for(Product p : products) {
+                if(p.getId() == history.get(i).getProductId()) { // is potion
+                    while ((history.size() > i) && (history.get(i).getDate().compareTo(calendar.getTime()) >= 0)) {
                         Calendar date = Calendar.getInstance();
                         date.setTime(history.get(i).getDate());
                         month = date.get(Calendar.MONTH);
