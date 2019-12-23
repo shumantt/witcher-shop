@@ -15,7 +15,7 @@ public class GoodsRepository {
     private static final String AddProducableItemSql = "INSERT INTO goods (name, description, instruction, is_producable) VALUES (?, ?, ?, true) RETURNING id;";
     private static final String AddProducableItemComponentsSql = "INSERT INTO recipe_goods (recipe_id, component_id, required_quantity) VALUES (?, ?, ?);";
     private static final String AddComponentItemSql = "INSERT INTO goods (name, description) VALUES (?, ?);";
-    private static final String UpdateGoodsQuantity = "UPDATE goods SET quantity = ? WHERE id = ?;";
+    private static final String UpdateGoodsQuantity = "UPDATE goods SET quantity = quantity + ? WHERE id = ?;";
     private static final String IncrementGoodsQuantity = "UPDATE goods SET quantity = quantity + 1 WHERE id = ?;";
     private static final String DecreaseComponentsCount = "UPDATE goods SET quantity = quantity - required_quantity FROM recipe_goods rg WHERE rg.recipe_id = ? AND rg.component_id = id;";
     private static final String FindRecipeComponents = "SELECT rg.required_quantity, g.quantity, g.id, g.name FROM goods g, recipe_goods rg WHERE rg.recipe_id = ? AND rg.component_id = g.id;";
@@ -42,16 +42,16 @@ public class GoodsRepository {
             resultSet.next();
             int id = resultSet.getInt("id");
 
+            statement = connection.prepareStatement(AddProducableItemComponentsSql);
             for(Recipe.Component component : request.getIngredients()){
-                statement = connection.prepareStatement(AddProducableItemComponentsSql);
                 statement.setInt(1, id);
                 statement.setInt(2, component.getId());
                 statement.setInt(3, component.getRequiredQuantity());
                 statement.addBatch();
             }
 
+            statement.executeBatch();
             Statement s = addHistoryEventToBatch(connection, request.getUserLogin(), id, 1);
-
             s.executeBatch();
             connection.commit();
 
@@ -101,7 +101,7 @@ public class GoodsRepository {
 
             PreparedStatement statement = connection.prepareStatement(DecreaseComponentsCount);
             statement.setInt(1, recipeId);
-            statement.addBatch();
+            statement.execute();
 
             PreparedStatement preparedStatement = connection.prepareStatement(FindRecipeComponents);
             preparedStatement.setInt(1, recipeId);
@@ -114,7 +114,7 @@ public class GoodsRepository {
 
             statement = connection.prepareStatement(IncrementGoodsQuantity);
             statement.setInt(1, recipeId);
-            statement.addBatch();
+            statement.execute();
 
             Statement s = addHistoryEventToBatch(connection, userLogin, recipeId, 1);
 
@@ -203,7 +203,7 @@ public class GoodsRepository {
             PreparedStatement statement = connection.prepareStatement(UpdateGoodsQuantity);
             statement.setInt(1, quantity);
             statement.setInt(2, id);
-            statement.addBatch();
+            statement.execute();
 
             Statement s = addHistoryEventToBatch(connection, userLogin, id, quantity);
 
