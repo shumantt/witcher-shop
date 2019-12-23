@@ -54,9 +54,9 @@ public class ReportResponse {
 
         public static class Dataset {
             private String label;
-            private List<Float> data;
+            private float[] data;
 
-            public Dataset(String label, List<Float> data) {
+            public Dataset(String label, float[] data) {
                 this.label = label;
                 this.data = data;
             }
@@ -69,11 +69,11 @@ public class ReportResponse {
                 this.label = label;
             }
 
-            public List<Float> getData() {
+            public float[] getData() {
                 return data;
             }
 
-            public void setData(List<Float> data) {
+            public void setData(float[] data) {
                 this.data = data;
             }
         }

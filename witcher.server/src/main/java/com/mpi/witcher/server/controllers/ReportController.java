@@ -21,6 +21,9 @@ import static org.springframework.http.ResponseEntity.ok;
 @RequestMapping("/api/report")
 public class ReportController {
 
+    private static final String[] MONTHS = new String[] { "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль",
+    "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"};
+
     private GoodsRepository goodsRepository = new GoodsRepository();
     private UsersRepository usersRepository = new UsersRepository();
 
@@ -69,27 +72,27 @@ public class ReportController {
         List<String> labels = new ArrayList<>();
         int month = calendar.get(Calendar.MONTH);
         while (month < endMonth) {
-            labels.add(Integer.toString(month++));
+            labels.add(MONTHS[month++]);
         }
         List<ReportResponse.ChartData.Dataset> datasets = new ArrayList<>();
         for(Product product : products) {
             List<HistoryEvent> history = product.getHistory();
             history.sort(Comparator.comparing(HistoryEvent::getDate).reversed());
 
-            List<Float> values = new ArrayList<>();
+            float[] values = new float[12];
+            Arrays.fill(values, 0);
             int i = 0;
-            int prevMonth = -1;
+            int j = 0;
+            int currMonth = month;
             while ((history.size() > i) && (history.get(i).getDate().compareTo(calendar.getTime()) >= 0)) {
                 Calendar date = Calendar.getInstance();
                 date.setTime(history.get(i).getDate());
                 month = date.get(Calendar.MONTH);
-                if(month != prevMonth) {
-                    values.add((float) history.get(i).getChange());
-                } else {
-                    int j = values.size() - 1;
-                    values.set(j, values.get(j) + history.get(i).getChange());
+                if(month != currMonth) {
+                    j++;
                 }
-                prevMonth = month;
+                values[j] += (float) history.get(i).getChange();
+                currMonth = month;
                 i++;
             }
             datasets.add(new ReportResponse.ChartData.Dataset(product.getName(), values));
@@ -115,7 +118,7 @@ public class ReportController {
         List<String> labels = new ArrayList<>();
         int month = calendar.get(Calendar.MONTH);
         while (month < endMonth) {
-            labels.add(Integer.toString(month++));
+            labels.add(MONTHS[month++]);
         }
         List<ReportResponse.ChartData.Dataset> datasets = new ArrayList<>();
         for(User user : users) {
@@ -124,20 +127,20 @@ public class ReportController {
             List<HistoryEvent> history = goodsRepository.getHistoryByUserId(user.getLogin());
             history.sort(Comparator.comparing(HistoryEvent::getDate).reversed());
 
-            List<Float> values = new ArrayList<>();
+            float[] values = new float[12];
+            Arrays.fill(values, 0);
             int i = 0;
-            int prevMonth = -1;
+            int j = 0;
+            int currMonth = month;
             while ((history.size() > i) && (history.get(i).getDate().compareTo(calendar.getTime()) >= 0)) {
                 Calendar date = Calendar.getInstance();
                 date.setTime(history.get(i).getDate());
                 month = date.get(Calendar.MONTH);
-                if(month != prevMonth) {
-                    values.add((float) history.get(i).getChange());
-                } else {
-                    int j = values.size() - 1;
-                    values.set(j, values.get(j) + history.get(i).getChange());
+                if(month != currMonth) {
+                    j++;
                 }
-                prevMonth = month;
+                values[j] += (float) history.get(i).getChange();
+                currMonth = month;
                 i++;
             }
             datasets.add(new ReportResponse.ChartData.Dataset(user.getName(), values));
@@ -163,7 +166,7 @@ public class ReportController {
         List<String> labels = new ArrayList<>();
         int month = calendar.get(Calendar.MONTH);
         while (month < endMonth) {
-            labels.add(Integer.toString(month++));
+            labels.add(MONTHS[month++]);
         }
         List<ReportResponse.ChartData.Dataset> datasets = new ArrayList<>();
         for(User user : users) {
@@ -172,20 +175,20 @@ public class ReportController {
             List<HistoryEvent> history = goodsRepository.getHistoryByUserId(user.getLogin());
             history.sort(Comparator.comparing(HistoryEvent::getDate).reversed());
 
-            List<Float> values = new ArrayList<>();
+            float[] values = new float[12];
+            Arrays.fill(values, 0);
             int i = 0;
-            int prevMonth = -1;
+            int j = 0;
+            int currMonth = month;
             while ((history.size() > i) && (history.get(i).getDate().compareTo(calendar.getTime()) >= 0)) {
                 Calendar date = Calendar.getInstance();
                 date.setTime(history.get(i).getDate());
                 month = date.get(Calendar.MONTH);
-                if(month != prevMonth) {
-                    values.add((float) history.get(i).getChange());
-                } else {
-                    int j = values.size() - 1;
-                    values.set(j, values.get(j) + history.get(i).getChange());
+                if(month != currMonth) {
+                    j++;
                 }
-                prevMonth = month;
+                values[j] += (float) history.get(i).getChange();
+                currMonth = month;
                 i++;
             }
             datasets.add(new ReportResponse.ChartData.Dataset(user.getName(), values));
@@ -220,22 +223,22 @@ public class ReportController {
             List<HistoryEvent> history = goodsRepository.getHistoryByUserId(user.getLogin());
             history.sort(Comparator.comparing(HistoryEvent::getDate).reversed());
 
-            List<Float> values = new ArrayList<>();
+            float[] values = new float[12];
+            Arrays.fill(values, 0);
             int i = 0;
-            int prevMonth = -1;
+            int j = 0;
+            int currMonth = month;
             while ((history.size() > i) && (history.get(i).getDate().compareTo(calendar.getTime()) >= 0)) {
                 for(Product p : products) {
                     if(p.getId() == history.get(i).getProductId()) { // is potion
                         Calendar date = Calendar.getInstance();
                         date.setTime(history.get(i).getDate());
                         month = date.get(Calendar.MONTH);
-                        if(month != prevMonth) {
-                            values.add((float) history.get(i).getChange());
-                        } else {
-                            int j = values.size() - 1;
-                            values.set(j, values.get(j) + history.get(i).getChange());
+                        if(month != currMonth) {
+                            j++;
                         }
-                        prevMonth = month;
+                        values[j] += (float) history.get(i).getChange();
+                        currMonth = month;
                         i++;
                     }
                 }
