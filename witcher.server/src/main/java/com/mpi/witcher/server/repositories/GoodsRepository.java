@@ -290,6 +290,12 @@ public class GoodsRepository {
                 List<String> categories = getProductCategories(connection, id);
                 List<HistoryEvent> history = getProductHistory(connection, id);
 
+                boolean isDub = false;
+                for(Product p : products)
+                    if(p.getId() == id)
+                        isDub = true;
+                if(isDub)
+                    continue;
                 products.add(new Product(
                         id,
                         rs.getString("name"),
