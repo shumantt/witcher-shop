@@ -32,8 +32,8 @@
         <div class="table-container">
             <md-table v-model="info.history" class="main-table" >
                 <md-table-row slot="md-table-row" slot-scope="{ item }" class="md-primary">
-                    <md-table-cell md-label="Кто добыл">{{ item.name }}</md-table-cell>
-                    <md-table-cell md-label="Количество">{{ item.quantity }}</md-table-cell>
+                    <md-table-cell md-label="Кто добыл">{{ item.userId }}</md-table-cell>
+                    <md-table-cell md-label="Количество">{{ item.change }}</md-table-cell>
                     <md-table-cell md-label="Дата">{{ item.date }}</md-table-cell>
                 </md-table-row>
             </md-table>

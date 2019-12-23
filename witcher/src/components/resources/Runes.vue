@@ -103,6 +103,9 @@
             fetchRunes() {
                 this.$store.dispatch("fetchRunes")
                     .then((runes) => {
+                        for(var i in runes) {
+                            runes[i].enchanted = runes[i].quantity > 0;
+                        }
                         this.runes = runes;//fakeData;
                         this.filteredRunes = runes;// fakeData;
                     })

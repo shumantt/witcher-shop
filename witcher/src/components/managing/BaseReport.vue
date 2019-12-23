@@ -1,6 +1,6 @@
 <template>
     <div>
-        <md-table v-model="data.reportData" class="main-table" md-card>
+        <md-table v-model="data.reportData" class="main-table" v-if="data.reportData.length > 0" md-card>
             <md-table-toolbar>
                 <h1 class="md-title">Общие данные</h1>
             </md-table-toolbar>
@@ -70,6 +70,26 @@ import LineChart from '@/charts/LineChart.js'
     
 // };
 
+const colors = ['#0f52bf', '#95a014', '#ff52bf', '#b5a014', '#42f54e'];
+
+let curColor = 0;
+const getColor = () => {
+    if(curColor === colors.length) {
+        curColor = 0;
+    }
+    let rColor = curColor;
+    curColor++;
+    return rColor;
+};
+
+const setColor =(data) => {
+     for (var i in data.charts) {
+         for (var j in data.charts[i].datasets)
+            data.charts[i].datasets[j] .backgroundColor = colors[getColor()];
+     }
+     return data;
+};
+
 export default {
     name: 'BaseReport',
     props:['type', 'employee', 'period'],
@@ -102,8 +122,9 @@ export default {
         fetchData() {
                this.$store.dispatch("getBaseReport", {type: this.type, employeeId: this.employee, period: this.period})
                    .then((data) => {
-                       this.data = data;//JSON.parse(JSON.stringify(fakeData));
-                       this.data.reportData.push({name: this.employee || this.type, value: this.period || this.type});
+                       curColor = 0;
+                       this.data = setColor(data);//JSON.parse(JSON.stringify(fakeData));
+                       //this.data.reportData.push({name: this.employee || this.type, value: this.period || this.type});
                    })
                    .catch(console.log)
         }

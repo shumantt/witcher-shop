@@ -1,11 +1,11 @@
 <template>
     <div class="report-container">
          <md-tabs>
-            <md-tab id="tab-base" md-label="Общий" exact>
+            <!--<md-tab id="tab-base" md-label="Общий" exact>
                 <BaseReport type="base"/>
-            </md-tab>
+            </md-tab>-->
 
-            <md-tab id="tab-consumptions" md-label="Расходы" >
+            <md-tab id="tab-consumptions" md-label="Расходы" exact>
                 <div class="md-layout">
                     <div class="md-layout-item label">
                         <div class="md-subtitle">Период отчета (последних месяцев)</div>
@@ -47,7 +47,7 @@
                     <div class="md-layout-item selector">
                         <md-field>
                             <md-select v-model="kpiEmployeeId" name="kpiEmployeeId" id="kpiEmployeeId" :md-selected="kpiEmployeeIdSelected()">
-                                <md-option value="-1">Все</md-option>
+                                
                                 <md-option v-for="employee in employees" v-bind:key="employee.login" :value="employee.login">{{employee.name}}</md-option>
                             </md-select>
                         </md-field>
