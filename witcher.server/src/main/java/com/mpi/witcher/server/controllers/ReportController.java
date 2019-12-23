@@ -72,14 +72,14 @@ public class ReportController {
         List<String> labels = new ArrayList<>();
         int month = calendar.get(Calendar.MONTH);
         while (month < endMonth) {
-            labels.add(MONTHS[month++]);
+            labels.add(MONTHS[1 + month++]);
         }
         List<ReportResponse.ChartData.Dataset> datasets = new ArrayList<>();
         for(Product product : products) {
             List<HistoryEvent> history = product.getHistory();
             history.sort(Comparator.comparing(HistoryEvent::getDate).reversed());
 
-            float[] values = new float[12];
+            float[] values = new float[period + 1];
             Arrays.fill(values, 0);
             int i = 0;
             int j = 0;
