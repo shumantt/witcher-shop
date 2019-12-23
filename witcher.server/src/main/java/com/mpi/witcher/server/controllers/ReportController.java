@@ -77,7 +77,7 @@ public class ReportController {
             int i = 0;
             int j = 0;
             int prevMonth = -1;
-            while ((history.size() > i) && (history.get(i).getDate().compareTo(calendar.getTime()) > 0)) {
+            while ((history.size() > i) && (history.get(i).getDate().compareTo(calendar.getTime()) >= 0)) {
                 Calendar date = Calendar.getInstance();
                 date.setTime(history.get(i).getDate());
                 month = date.get(Calendar.MONTH);
@@ -92,6 +92,7 @@ public class ReportController {
             }
             datasets.add(new ReportResponse.ChartData.Dataset(product.getName(), values));
         }
+        charts.add(new ReportResponse.ChartData(labels, datasets));
         kvData.add(new ReportResponse.NameValuePair("Products count", products.size()));
 
         ReportResponse response = new ReportResponse(kvData, charts);
