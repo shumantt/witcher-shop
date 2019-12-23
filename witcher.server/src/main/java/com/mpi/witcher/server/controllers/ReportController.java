@@ -3,7 +3,9 @@ package com.mpi.witcher.server.controllers;
 import com.mpi.witcher.server.models.HistoryEvent;
 import com.mpi.witcher.server.models.Product;
 import com.mpi.witcher.server.models.responses.ReportResponse;
+import com.mpi.witcher.server.models.users.User;
 import com.mpi.witcher.server.repositories.GoodsRepository;
+import com.mpi.witcher.server.repositories.UsersRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,7 @@ import static org.springframework.http.ResponseEntity.ok;
 public class ReportController {
 
     private GoodsRepository goodsRepository = new GoodsRepository();
+    private UsersRepository usersRepository = new UsersRepository();
 
     @GetMapping("/base")
     public ResponseEntity getBaseReport() {
@@ -75,7 +78,6 @@ public class ReportController {
 
             List<Float> values = new ArrayList<>();
             int i = 0;
-            int j = 0;
             int prevMonth = -1;
             while ((history.size() > i) && (history.get(i).getDate().compareTo(calendar.getTime()) >= 0)) {
                 Calendar date = Calendar.getInstance();
@@ -83,9 +85,9 @@ public class ReportController {
                 month = date.get(Calendar.MONTH);
                 if(month != prevMonth) {
                     values.add((float) history.get(i).getChange());
-                    j++;
                 } else {
-                    values.set(j, values.get(i) + history.get(i).getChange());
+                    int j = values.size() - 1;
+                    values.set(j, values.get(j) + history.get(i).getChange());
                 }
                 prevMonth = month;
                 i++;
@@ -101,9 +103,50 @@ public class ReportController {
 
     @GetMapping("/workload")
     public ResponseEntity getWorkloadReport() {
-        // TODO общий отчет загруженности по всем сотрудникам
-        // формат ответа такой же, как в getBaseReport
-        return ok(null);
+        List<User> users = usersRepository.getAll();
+
+        List<ReportResponse.NameValuePair> kvData = new ArrayList<>();
+        List<ReportResponse.ChartData> charts = new ArrayList<>();
+
+        Calendar calendar = Calendar.getInstance();
+        int endMonth = calendar.get(Calendar.MONTH);
+        calendar.add(Calendar.YEAR, -1);
+
+        List<String> labels = new ArrayList<>();
+        int month = calendar.get(Calendar.MONTH);
+        while (month < endMonth) {
+            labels.add(Integer.toString(month++));
+        }
+        List<ReportResponse.ChartData.Dataset> datasets = new ArrayList<>();
+        for(User user : users) {
+            if(user.getRole().equalsIgnoreCase("client"))
+                continue;
+            List<HistoryEvent> history = goodsRepository.getHistoryByUserId(user.getLogin());
+            history.sort(Comparator.comparing(HistoryEvent::getDate).reversed());
+
+            List<Float> values = new ArrayList<>();
+            int i = 0;
+            int prevMonth = -1;
+            while ((history.size() > i) && (history.get(i).getDate().compareTo(calendar.getTime()) >= 0)) {
+                Calendar date = Calendar.getInstance();
+                date.setTime(history.get(i).getDate());
+                month = date.get(Calendar.MONTH);
+                if(month != prevMonth) {
+                    values.add((float) history.get(i).getChange());
+                } else {
+                    int j = values.size() - 1;
+                    values.set(j, values.get(j) + history.get(i).getChange());
+                }
+                prevMonth = month;
+                i++;
+            }
+            datasets.add(new ReportResponse.ChartData.Dataset(user.getName(), values));
+        }
+        charts.add(new ReportResponse.ChartData(labels, datasets));
+        kvData.add(new ReportResponse.NameValuePair("Users count", users.size()));
+
+        ReportResponse response = new ReportResponse(kvData, charts);
+        return ok(response);
     }
 
     @GetMapping("/workload/employee")

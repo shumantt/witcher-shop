@@ -27,6 +27,7 @@ public class GoodsRepository {
     private static final String FindProductCategories = "SELECT name FROM categories c, goods_categories gc WHERE gc.category_id = c.id AND gc.goods_id = ?;";
     private static final String AddHistoryEvent = "INSERT INTO history (user_id, product_id, change, date) VALUES (?, ?, ?, now());";
     private static final String GetHistoryByProductId = "SELECT * FROM history WHERE product_id = ?;";
+    private static final String GetHistoryByUserId = "SELECT * FROM history WHERE user_id = ?;";
 
     public boolean addProducableItem(AddProducableItemRequest request) {
         try {
@@ -299,6 +300,29 @@ public class GoodsRepository {
             }
             connection.close();
             return products;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public List<HistoryEvent> getHistoryByUserId(String userLogin) {
+        try {
+            Connection connection = Database.connect();
+            PreparedStatement statement = connection.prepareStatement(GetHistoryByUserId);
+
+            List<HistoryEvent> history = new ArrayList<>();
+            statement.setString(1, userLogin);
+            ResultSet hrs = statement.executeQuery();
+            while (hrs.next()){
+                history.add(new HistoryEvent(
+                        hrs.getInt("id"),
+                        hrs.getString("user_id"),
+                        hrs.getInt("product_id"),
+                        hrs.getInt("change"),
+                        hrs.getDate("date")
+                ));
+            }
+            return history;
         } catch (SQLException e) {
             return null;
         }
