@@ -20,6 +20,7 @@ public class GoodsRepository {
     private static final String FindRecipeComponents = "SELECT rg.required_quantity, g.quantity, g.id, g.name FROM goods g, recipe_goods rg WHERE rg.recipe_id = ? AND rg.component_id = g.id;";
     private static final String FindAllRecipes = "SELECT * FROM goods WHERE is_producable = true;";
     private static final String FindGoodsByCategory = "SELECT g.*, c.name \"category\" FROM goods g, categories c, goods_categories gc WHERE gc.category_id = c.id AND gc.goods_id = g.id AND c.name = ?;";
+    private static final String GetAllGoods = "SELECT g.*, c.name \"category\" FROM goods g, categories c, goods_categories gc WHERE gc.category_id = c.id AND gc.goods_id = g.id;";
     //private static final String FindResourceById = "SELECT g.*, c.name \"category\", h.* FROM goods g, categories c, history h WHERE g.id = ? AND c.id = g.category_id AND h.product_id = g.id;";
     private static final String FindResourceById = "SELECT * FROM goods WHERE id = ?;";
     private static final String FindProductCategories = "SELECT name FROM categories WHERE id = ?;";
@@ -270,4 +271,30 @@ public class GoodsRepository {
         return categories;
     }
 
+    public List<Product> getAllProducts() {
+        try {
+            Connection connection = Database.connect();
+            PreparedStatement statement = connection.prepareStatement(GetAllGoods);
+            ResultSet rs = statement.executeQuery();
+
+            List<Product> products = new ArrayList<>();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                List<String> categories = getProductCategories(connection, id);
+                List<HistoryEvent> history = getProductHistory(connection, id);
+
+                products.add(new Product(
+                        id,
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        categories,
+                        rs.getInt("quantity"),
+                        history));
+            }
+            connection.close();
+            return products;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
 }
