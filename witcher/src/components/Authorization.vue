@@ -3,11 +3,11 @@
         <h1 class="md-title">Вход</h1>
         <md-field md-clearable>
             <label>Логин</label>
-            <md-input v-model="login" ></md-input>
+            <md-input v-model="login" v-on:keyup.enter="auth()"></md-input>
         </md-field>
         <md-field md-clearable>
             <label>Пароль</label>
-            <md-input v-model="password" type="password"></md-input>
+            <md-input v-model="password" type="password" v-on:keyup.enter="auth()"></md-input>
         </md-field>
         <div class="buttons-row">
             <md-button class="md-raised left" @click="auth()">Войти</md-button>

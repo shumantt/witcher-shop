@@ -38,7 +38,7 @@ export default {
         clear() {
             this.type = "";
             this.name = "";
-            this.number = 0;
+            this.number = 1;
             this.id = -1;
             this.resultMessage = null;
             this.$refs.selector.clear();

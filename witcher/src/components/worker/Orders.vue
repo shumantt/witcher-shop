@@ -38,7 +38,7 @@
                             <md-field>
                                 <md-select v-model="item.status" name="status" id="status" :md-selected="updateStatus(item)">
                                     <md-option value="0" disabled>Принят</md-option>
-                                    <md-option value="1" :disabled="item.status == 2">Готов к выдаче</md-option>
+                                    <md-option value="1">Готов к выдаче</md-option>
                                     <md-option value="2">Закрыт</md-option>
                                 </md-select>
                             </md-field>

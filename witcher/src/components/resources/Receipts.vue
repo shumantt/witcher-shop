@@ -5,7 +5,7 @@
                 <div class="md-layout-item">
                     <md-field>
                         <md-icon >search</md-icon>
-                        <md-input v-model="searchText" ></md-input>
+                        <md-input v-model="searchText" v-on:keyup.enter="filterRecipes()"></md-input>
                     </md-field>
                 </div>
                 <div class="md-layout-item">
@@ -136,7 +136,9 @@ export default {
 
         addRecipe() {
             this.$router.push('/receipts/add');
-        }
+        },
+        
+        
     }
 }
 </script>
