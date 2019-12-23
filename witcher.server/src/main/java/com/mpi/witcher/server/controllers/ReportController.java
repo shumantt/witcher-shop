@@ -117,9 +117,10 @@ public class ReportController {
 
         List<String> labels = new ArrayList<>();
         int month = calendar.get(Calendar.MONTH);
-        while (month <= endMonth) {
+        while (month != endMonth) {
             labels.add(MONTHS[month++]);
         }
+        labels.add(MONTHS[endMonth]);
         List<ReportResponse.ChartData.Dataset> datasets = new ArrayList<>();
         for(User user : users) {
             if(user.getRole().equalsIgnoreCase("client"))
@@ -213,9 +214,10 @@ public class ReportController {
 
         List<String> labels = new ArrayList<>();
         int month = calendar.get(Calendar.MONTH);
-        while (month <= endMonth) {
+        while (month != endMonth) {
             labels.add(MONTHS[month++]);
         }
+        labels.add(MONTHS[endMonth]);
         List<ReportResponse.ChartData.Dataset> datasets = new ArrayList<>();
         for(User user : users) {
             if(!user.getLogin().equalsIgnoreCase(login))
