@@ -23,8 +23,7 @@ public class GoodsRepository {
     private static final String GetAllGoods = "SELECT g.*, c.name \"category\" FROM goods g, categories c, goods_categories gc WHERE gc.category_id = c.id AND gc.goods_id = g.id;";
     //private static final String FindResourceById = "SELECT g.*, c.name \"category\", h.* FROM goods g, categories c, history h WHERE g.id = ? AND c.id = g.category_id AND h.product_id = g.id;";
     private static final String FindResourceById = "SELECT * FROM goods WHERE id = ?;";
-    private static final String FindProductCategories = "SELECT name FROM categories WHERE id = ?;";
-
+    private static final String FindProductCategories = "SELECT name FROM categories c, goods_categories gc WHERE gc.category_id = c.id AND gc.goods_id = ?;";
     private static final String AddHistoryEvent = "INSERT INTO history (user_id, product_id, change, date) VALUES (?, ?, ?, now());";
     private static final String GetHistoryByProductId = "SELECT * FROM history WHERE product_id = ?;";
 
