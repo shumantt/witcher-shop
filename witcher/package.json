@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
-    "chart.js": "^2.8.0",
+    "chart.js": "^2.9.4",
     "core-js": "^2.6.5",
     "es7-object-polyfill": "^1.0.1",
     "http2": "^3.3.7",
